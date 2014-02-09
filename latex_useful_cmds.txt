@@ -1,0 +1,43 @@
+Potentially useful LaTeX commands
+
+\usepackage{tensor} % Mixed (contra, co)-variant indices
+\usepackage{dcolumn} % Align columns on decimal point
+
+% Problem numbering (homework, lab reports)
+\newcounter{iternum}
+\setcounter{iternum}{0}
+\newcommand{\prob}{\stepcounter{iternum} \textbf{\arabic{iternum}.} }
+\newcommand{\probcont}{\textbf{\arabic{iternum}. (cont.) }}
+
+% Useful math things
+\newcommand {\mt}{\mathrm}
+\newcommand {\unit}[1]{\; \mt{#1}}
+\newcommand{\setbuild}[2]{\{#1 \:|\: #2\}}
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+\newcommand{\conj}{\overbar} % Conjugation
+\newcommand{\ket}[1]{|#1\rangle}
+
+% Useful operators
+\DeclareMathOperator{\realpt}{Re}
+\DeclareMathOperator{\impt}{Im}
+\DeclareMathOperator{\sgn}{sgn}
+
+% Useful sets
+\newcommand{\nl}{\varnothing}
+\newcommand {\ints}{\mathbb{Z}}
+\newcommand {\reals}{\mathbb{R}}
+\newcommand {\comps}{\mathbb{C}}
+\newcommand {\rats}{\mathbb{Q}}
+\newcommand {\nats}{\mathbb{N}}
+
+% Useful derivative stuff
+\newcommand {\ptl}{\partial}
+\newcommand {\pdrv}[2]{\frac{\ptl #1}{\ptl #2}}
+\newcommand {\pdrvn}[3]{\frac{\ptl^#3 #1}{\ptl #2^#3}}
+\newcommand {\drv}[2]{\frac{d #1}{d #2}}
+\newcommand {\drvn}[3]{\frac{d^#3 #1}{d #2^#3}}
+
+% Useful shorteners in general
+\newcommand {\Rn}{\mt{Re}}
+\newcommand {\Bi}{\mt{Bi}}
+\newcommand {\Cd}{\mt{C_D}}

@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in, letterpaper]{geometry}
+\usepackage{parskip}
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{enumerate} % For use of (a), (b), et cetera
+%\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+
+% The following metadata will show up in the PDF properties
+\hypersetup{
+	colorlinks = true,
+	urlcolor = black,
+	pdfauthor = {Aaron Tran},
+	pdfkeywords = {berkeley},
+	pdftitle = {Astro 121, UG Radio Lab, Lab 1 - \today},
+%	pdfsubject = {},
+	pdfpagemode = UseNone
+}
+
+% Don't indent paragraphs
+\setlength\parindent{0em}
+
+% Problem numbering
+\newcounter{iternum}
+\setcounter{iternum}{0}
+\newcommand{\prob}{\stepcounter{iternum} \textbf{\arabic{iternum}.} }
+\newcommand{\probcont}{\textbf{\arabic{iternum}. (cont.) }}
+
+% ===============
+% Useful commands
+% ===============
+\newcommand {\mt}{\mathrm}
+\newcommand {\unit}[1]{\; \mt{#1}}
+% http://vemod.net/typesetting-units-in-latex
+
+% ==========================
+% Document specific commands
+% ==========================
+
+\begin{document}
+
+\section{Abstract}
+
+Give numbers (e.g., transmission line speed)
+
+\section{Introduction}
+
+Don't go that long.  Keep it simple.  Whatever you need for it to feel
+complete, more for you.
+
+\section{Methods}
+
+\section{Voltage dividers}
+
+We use two $10 \unit{k\Omega}$ resistors to form a resistive voltage divider.
+When applying a DC current, we measure $V_\mt{in} = 6.13 \unit{V}$
+and $V_\mt{out} = 3.05 \unit{V}$.  Current is $0.30 \unit{mA}$.
+Strangely, when we apply a $1 \unit{MHz}$ signal with $V_\mt{pp} = 5 \unit{V}$,
+we find extreme signal attenuation.  This also occurs at $1 \unit{kHz}$.
+When we change our resistors to $1.2 \unit{k\Omega}$, we observe
+a signal scaled by $1/2$ as expected.  We do not currently understand why
+$10 \unit{k\Omega}$ resistors cause such a decreased gain.
+
+We add a second voltage divider to the output of the first, using the
+same resistors ($10 \unit{k\Omega}$).  For what we assume is the same
+input voltage, $6.13 \unit{V}$, we measure $1.20 \unit{V}$ at the output
+of the second voltage divider.
+
+The impedance of a voltage divider is dependent on the application.
+
+The Th\`{e}venin equivalent resistance of the first divider, seen from
+its output, is BLAH.  Thevenin voltage is Vth = Vin*R2/(R1+R2).  Thevenin
+current is Vin/R1.  Then, Zth is R2*R1/(R1+R2) as expected.
+
+The equivalent resistance of infinitely many parallel resistors is zero.
+
+We use two $10 \unit{nF}$ capacitors to form a capacitive voltage divider.
+The capacitors halve sinusoidal input signals at both $1 \unit{kHz}$ and
+$1 \unit{MHz}$ as expected.  If we add a resistor to ground at the output,
+we expect:
+\begin{equation}
+  \frac{V_{out}}{V_{in}} = \frac{1}{2 + 1/(j\omega RC)}
+\end{equation}
+where $j$ is the imaginary unit, $\omega$ is signal angular frequency (rad/s),
+and $R$ and $C$ are resistor and capacitor values ($\Omega$, F).  In effect,
+the circuit now behaves as a high-pass filter.
+
+\section{RC, LC, and RLC filters}
+
+Text
+
+\section{Diodes}
+
+Text
+
+\section{FM demodulator}
+
+Text
+
+\section{Results}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+What you're gonna do with this next.  Don't rewrite your intro/abstract.
+
+Use plain fucking english.  Don't worry about being technical, or too
+concise... otherwise you're fucked.
+
+\end{document}
