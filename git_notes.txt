@@ -1,0 +1,27 @@
+A few notes on git workflow
+===========================
+
+http://rogerdudler.github.io/git-guide/
+http://blog.osteele.com/posts/2008/05/my-git-workflow
+
+# Initial setup
+
+git init
+vim README.md
+git add [whatever]
+git commit -m "whatever"
+git remote add origin https://github.com/aarontran/ay121.git
+git push -u origin master
+
+# Working and committing
+
+git add [whatever] / git add *
+git diff
+git checkout -- [whatever] # To get file from last commit
+git commit -m "whatever"
+
+# Pushing changes
+git push origin master
+
+# Get updated commit
+git pull

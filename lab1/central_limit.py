@@ -1,6 +1,6 @@
 """
 Astro 121 Radio Lab
-Spring 2014
+Spring 2014, Prof. A Parsons
 Aaron Tran
 
 Obtain many sums of n random samples, from some distribution
@@ -17,10 +17,35 @@ def main():
     Unif. dist.: mean of means = 0.5, stdev. of means = 1/sqrt(12) / sqrt(n)
     Poisson dist.: mean of means = 0.5, stdev of means = 1/sqrt(0.5) / sqrt(n)
     If plotting sums, mean of sums is m*0.5.  Stdev of sums = m/sqrt(?) /sqrt(n)
+
+    Increasing m decreases standard deviation
+    Increasing n better approximates Gaussian distribution
     """
-    m = 10 # number of random samples to sum
+    
+    # First, fix m=10, vary n to show that means /are/ normally distributed
+    m = 10
+    nvals = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1e3, 2e3, 5e3, 1e4, 1e5, 1e6]
+    
+    
+    
+    data_means = np.empty_like(nvals)
+    data_stds = np.empty_like(nvals)
+    for n in nvals:
+        data_means = mean_unif_samp(m,n)
+        data_mu = np.mean(data_means) # sample mean of means
+        data_std = np.std(data_means) # sample std of means
+        makeNormalPlot(m, n, 100)
+
+    makeNormalPlot(10, 1000000, 100)
+
+
+def makeNormalPlot(m,n,bins):
+    """
+    Generates plot and theoretical prediction
+    m = number of random samples to sum
     n = 1000000 # number of sums to calculate
     bins = 100 # number of bins for histogram
+    """
     
     data_means = mean_unif_samp(m,n)
     std = std_of_mean_unif(m)
@@ -29,13 +54,12 @@ def main():
     x = np.linspace(mu-5*std, mu+5*std, 100)
     y = n*(10*std)/bins * gaussian(x, mu, std) # Scale by n * (bin width)
     
-    plt.plot(x, n*0.1*std*y, '-k', linewidth=2.0)
+    plt.plot(x, y, '-k', linewidth=2.0)
     plt.hold(True)
     plt.hist(data_means, bins, (mu-5*std,mu+5*std), color='c')
-    plt.savefig('test.png')
+    # plt.show()
+    # plt.savefig('test.png')
 
-def makeNormalPlot(m,n,bins):
-    print('hi')
 
 def gaussian(x, mean, std):
     # Take input vector x, output normalized gaussian(x)
