@@ -94,8 +94,8 @@ Week 2 data
     Using stated resistor values 2.7 kohm, 1.5 kohm (collector/emitter)
     I calculate 58 nanofarad to get a gain of 10 at f = 10kHz
     Use 2 0.1 microfarad in series
-    Test (10 kHz): V_in = 0.99 mV, V_out = 808 mV
-    Test (20 kHz): V_in = 0.99 mV, V_out = 1.56 mV
+    Test (10 kHz): V_in = 99 mV, V_out = 808 mV
+    Test (20 kHz): V_in = 99 mV, V_out = 1.56 mV
 
 Week 3 data
 -----------
