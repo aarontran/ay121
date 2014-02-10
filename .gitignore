@@ -9,6 +9,22 @@ ugradio
 __pycache__/
 *.py[cod]
 
+
+# Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+
+# Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
 # Vim swap files etc.
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]

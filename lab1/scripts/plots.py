@@ -17,10 +17,16 @@ def rlc_filter_gain_plot():
     plt.axvspan(1.045e6-0.1e6, 1.045e6+0.1e6, hold=True, alpha=0.3,
             facecolor='g')
     plt.plot(x, abs(y), '-k')
+    
     plt.xscale('log')
     plt.yscale('log')
-    plt.xlabel('Frequency (Hz)')
-    plt.ylabel(r'Gain $V_{out}/V_{in}$ (-)')
+    plt.xlabel('Frequency (Hz)', fontsize=16)
+    plt.ylabel(r'Gain $\left|V_{out}/V_{in}\right|$ (-)', fontsize=16)
+    
+    plt.xticks(fontsize=16)
+    plt.yticks(fontsize=16)
+    plt.tight_layout() # Prevent clipping labels
+    plt.savefig('rlc_filter_gain.pdf')
     plt.show()
 
 if __name__ == '__main__':
