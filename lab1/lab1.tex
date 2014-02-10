@@ -42,71 +42,75 @@
 
 \section{Abstract}
 
+Karto's general rule: one sent. for each sect.
 Give numbers (e.g., transmission line speed)
 
 \section{Introduction}
 
+Modulation of radio frequency (RF) electromagnetic waves is a simple and
+effective method for long distance information transmission, as exemplified by
+amplitude/frequency modulated radio.  The generation, transmission, and
+reception of modulated signals are interesting engineering problems which are
+also accessible to interested amateurs and beginning students of electronics.
+Simple modulators and demodulators may be built with a minimum
+of passive and active components (i.e., enough to fit on a small breadboard);
+transmitting/receiving antennae may be jury rigged with bottles and wire.
+RF circuits hold great educational potential for undergraduate students.
+
+Here we present the design and construction of an FM receiver ($1.045
+\unit{MHz}$ with bandwidth $200 \unit{kHz}$)
+
 Don't go that long.  Keep it simple.  Whatever you need for it to feel
-complete, more for you.
+complete, more for you.  Enough to interpret information presented later.
 
-\section{Methods}
+If length(intro) > length(discussion) you're doing it wrong.
 
-\section{Voltage dividers}
+\section{FM receiver design}
 
-We use two $10 \unit{k\Omega}$ resistors to form a resistive voltage divider.
-When applying a DC current, we measure $V_\mt{in} = 6.13 \unit{V}$
-and $V_\mt{out} = 3.05 \unit{V}$.  Current is $0.30 \unit{mA}$.
-Strangely, when we apply a $1 \unit{MHz}$ signal with $V_\mt{pp} = 5 \unit{V}$,
-we find extreme signal attenuation.  This also occurs at $1 \unit{kHz}$.
-When we change our resistors to $1.2 \unit{k\Omega}$, we observe
-a signal scaled by $1/2$ as expected.  We do not currently understand why
-$10 \unit{k\Omega}$ resistors cause such a decreased gain.
+* Circuit diagram of receiver, highlighting blocks of components that act to form a function
 
-We add a second voltage divider to the output of the first, using the
-same resistors ($10 \unit{k\Omega}$).  For what we assume is the same
-input voltage, $6.13 \unit{V}$, we measure $1.20 \unit{V}$ at the output
-of the second voltage divider.
+\subsection{Passive diode FM demodulator}
 
-The impedance of a voltage divider is dependent on the application.
+* Describe overall design of receiver, with subsections for each functional plot.  List salient features for each (-3dB point, bias voltages @ various locations, etc.). Present as if you invented it, and are writing a seminal paper (hahahaha)
 
-The Th\`{e}venin equivalent resistance of the first divider, seen from
-its output, is BLAH.  Thevenin voltage is Vth = Vin*R2/(R1+R2).  Thevenin
-current is Vin/R1.  Then, Zth is R2*R1/(R1+R2) as expected.
+* Plot expected output of LC filter in receiver as function of $f$.  Mark transmission band on plot and explain rationale behind its placement on response curve.
 
-The equivalent resistance of infinitely many parallel resistors is zero.
+* Plot bandpass of final filter that defines band of output audio signal.  Describe (maybe plot) rationale for selecting said filter.
 
-We use two $10 \unit{nF}$ capacitors to form a capacitive voltage divider.
-The capacitors halve sinusoidal input signals at both $1 \unit{kHz}$ and
-$1 \unit{MHz}$ as expected.  If we add a resistor to ground at the output,
-we expect:
-\begin{equation}
-  \frac{V_{out}}{V_{in}} = \frac{1}{2 + 1/(j\omega RC)}
-\end{equation}
-where $j$ is the imaginary unit, $\omega$ is signal angular frequency (rad/s),
-and $R$ and $C$ are resistor and capacitor values ($\Omega$, F).  In effect,
-the circuit now behaves as a high-pass filter.
+\subsection{Common-emitter amplifier}
 
-\section{RC, LC, and RLC filters}
+* Describe speaker amplifier (circuit diagram), describe how it works, parts, bias voltages.  Define operating band - what frequency range, and what sets the bounds?
 
-Text
+* Suppose speaker amplifier connects to speaker at end of long wire.  Given the circuit we built, what impedance cable do you recommend, how to terminate it (with 8-ohm speaker) to avoid reflections?  Don't worry about maximizing current through speaker.
 
-\section{Diodes}
+* Specify input/output impedance of circuit at audio frequencies
 
-Text
 
-\section{FM demodulator}
-
-Text
 
 \section{Results}
 
+* Discuss transmission line results.
+
+* Explain our odd troubles with the diode detector.  Whether the circuit helped was very equivocal...
+
+* Discuss frequency / clipping issues here?
+
+* Noise measurement
+
 \section{Discussion}
+
+* Amplifier test - explain Allan variance test, but give reasonable physical numbers
 
 \section{Conclusion}
 
 What you're gonna do with this next.  Don't rewrite your intro/abstract.
 
-Use plain fucking english.  Don't worry about being technical, or too
-concise... otherwise you're fucked.
+Use plain english.  Don't worry about being technical, or too concise...
+
+\section{Acknowledgments}
+
+Circuit diagrams were generated using Fritzing.
+
+\section{References}
 
 \end{document}

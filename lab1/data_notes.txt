@@ -104,6 +104,9 @@ Week 3 data
     Cougar Components AC1068C amplifier (Vcc = +15 V)
     24.5 dB gain below ~ 1.2 GHz (look up datasheet)
     All dead?!...
+    
+    For comparison: scope noise was around 0.3 mV, 0.5 mV -- depending on
+    whether we applied proper termination (decreased noise with termination)
 
 3.1 Resistor temperature
     Used 39 ohm resistors rated for 2 W

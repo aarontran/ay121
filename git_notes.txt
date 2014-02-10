@@ -17,6 +17,7 @@ git push -u origin master
 
 git add [whatever] / git add *
 git diff
+git status
 git checkout -- [whatever] # To get file from last commit
 git commit -m "whatever"
 
