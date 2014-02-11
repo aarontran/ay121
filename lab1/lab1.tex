@@ -178,9 +178,10 @@ frequencies will not be attenuated in a correctly designed circuit.
 \subsection{Common-emitter amplifier}
 
 We pass the extracted envelope curve from the diode demodulator to a
-common-emitter transistor amplifier.  Our choice of component values and
-following explanation of circuit operation are guided in large part by
-\emph{Horowitz and Hill} [1989].
+common-emitter transistor amplifier.  The transistor is a 2N5089 NPN bipolar
+junction transistor.  Our choice of component values and following explanation
+of circuit operation are guided in large part by \emph{Horowitz and Hill}
+[1989].
 
 The transistor's quiescent base voltage is set by a biasing voltage divider,
 which controls emitter voltage.  For appropriate choice of collector and
@@ -257,11 +258,10 @@ appeared to output audio when connected to the circuit output.  However, we
 found that the audio level was independent of whether the circuit was powered,
 or whether the FM signal was even connected to the circuit input.
 
-The common-emitter amplifier begins clipping at input of
-$1.4 \unit{V_{\mt{pp}}}$; this corresponded to output
-$2.34 \unit{V_{\mt{pp}}}$.  At this input, there appeared to be a very small
-voltage difference between collector and emitter.
-For smaller voltages at $10 \unit{kHz}$ it functioned correctly.
+The common-emitter amplifier begins clipping at low voltages with input of
+$1.4 \unit{V_{\mt{pp}}}$, or output of $2.34 \unit{V_{\mt{pp}}}$.  At this
+input, there appeared to be a very small voltage difference between collector
+and emitter. For smaller voltages at $10 \unit{kHz}$ it functioned correctly.
 
 % ==========
 % DISCUSSION
@@ -279,7 +279,7 @@ sufficiently low input frequencies.
 The traditional resolution to this problem is to neglect the series resistor
 (in the low-pass RC filter) and instead place a resistor in parallel to ground.
 As before, the characteristic time $RC$ should be comparable with the timescale
-of carrier wave oscillations (i.e., $1 / (1 \unit{MHz})$).  Unfortunately, we
+of carrier wave oscillations (i.e., $(1 \unit{MHz})^{-1}$).  Unfortunately, we
 neglected this and so our circuit design is inoperable.
 
 \subsection{Common-emitter amplifier design}
@@ -322,7 +322,7 @@ largely informed by \textit{Horowitz and Hill} [1989].
 The gain of this circuit (not bothering to take an absolute value) is
 \[
   \frac{V_\mt{out}}{V_\mt{in}}
-    = \frac{R_c} { R_e + (R_b)/(1+j\omega R_b C_e) }
+    = \frac{R_c} { R_e + R_b/(1+j\omega R_b C_e) }
 \]
 where $j$ is the imaginary unit, and we have denoted the bypassed resistor by
 $R_b$.  We have neglected transistor resistance $r_e$, which may be included
@@ -338,37 +338,115 @@ consider the lowest frequency $\omega_{\mt{min}}$ and impose the condition
 \]
 For $R_c = 2.5 \unit{k\Omega}$ and $\omega_{\mt{min}} = 20 \unit{Hz}$, we might
 pick $R_e = 250$, $R_b = 1 \unit{k\Omega}$ and $C_e = 32 \unit{\mu F}$.  This
-would give a stable gain of $10$ for all frequencies above $\sim 20 \unit{Hz}$.
+would give a stable gain of $10$ for all frequencies above $\sim 20 \unit{Hz}$
+-- a most desirable state of affairs.
 
-\subsection{Noise simulation and characterization}
+\subsection{Noise characterization}
 
 We attempted to quantify the Johnson-Nyquist noise in a resistor and in our
-receiver by using two amplifier stages, each with gain $24.5 \unit{dB}$ at
-frequencies below $1.2 \unit{GHz}$.  In the process, we discovered that a
-majority of available commercial amplifiers were dysfunctional and that we
-could not obtain any amplification.  Nevertheless, we present some theoretical
-calculations, simulations, and a procedure for estimating the noise figure of
-our receiver.
+receiver.  We sought to drive our receiver with a $39 \unit{\Omega}$ resistor
+and estimate the noise figure of the receiver by amplifying and measuring the
+receiver's output noise.  In the process, we discovered that a majority of
+available commercial amplifiers were dysfunctional and that we could not obtain
+any amplification.  Nevertheless, we present some theoretical calculations,
+simulations, and a procedure for estimating the noise figure of our receiver.
 
+The procedure is as follows.  We would connect a $39 \unit{\Omega}$ resistor
+across the input of our receiver, with some form of impedance matching, and
+drive the resistor at variable power ($0$--$2 \unit{W}$). By plotting output
+temperature $T_{\mt{out}}$ against resistor temperature $T_R$, we would perform
+a linear least squares fit to estimate our two unknowns: receiver gain $G$ and
+receiver temperature $T$; this is known as the $Y$-factor method.  From this we
+could estimate the noise figure of our receiver.
 
+We consider the Johnson--Nyquist noise of a $50 \unit{\Omega}$ resistor in the
+bandwidth $25$--$35 \unit{MHz}$ ($B = 10 \unit{MHz}$) at room temperature.  The
+root mean square (RMS) noise voltage is given as $V_{\mt{rms}} =
+(4k_B T B R)^{1/2}$, where $k_B$ is the Boltzmann constant, $T$ is resistor
+temperature in Kelvin, $B$ is bandwidth, and $R$ is resistance.  We find
+$V_{\mt{rms}} = 2.9 \unit{\mu V}$.
 
-Blah amplifiers, bandwidth and Johnson-Nyquist noise, oscilloscope noise.
+We used two Cougar Components AC1068C amplifiers, powered with $V_{\mt{cc}} =
++15 \unit{V}$, to attempt to amplify the noise.  Each amplifier has a stated
+gain of $24.5 \unit{dB}$ for frequencies below $1.2 \unit{GHz}$ and a stated
+noise figure of $3.7 \unit{dB}$.  Two amplifier stages give a 282x voltage
+gain, which should amplify $2.9 \unit{\mu V}$ to $0.81 \unit{mV}$.  In
+comparison, we found that the noise floor of our oscilloscope was approximately
+$0.3$--$0.5 \unit{mV}$, depending on termination; if successful, the amplified
+noise should be measurable.
 
-Thermal noise, resistor.
+We also wish to check the highest resistor temperature that can be achieved at
+$\sim 2 \unit{W}$.  We drive a $39 \unit{\Omega}$ resistor with $8.83 \unit{V}$
+from a DC voltage supply and measure its temperature to be $300 \pm 5$ degrees
+Fahrenheit, or $422 \pm 10 \unit{K}$, using an infrared thermometer.  In
+comparison, we predict a temperature of $700 \unit{K}$ for surface area $1
+\unit{cm^2}$ and emissivity $1$ using the Stefan-Boltzmann law.  A few effects
+may explain this discrepancy: 1. power is being dissipated by non radiative
+means (conduction through leads, advective cooling by air); the blackbody power
+dissipated at $422 \unit{K}$ is about $0.1 \unit{W}$, and 2. the DC power
+supply may be unable to supply the desired current; we noted the power
+supply typically read a current draw of $20$--$30 \unit{mA}$.
 
+We would then, using our resistor temperature measurement(s), drive our
+receiver with the resistor's Johnson-Nyquist noise, feed the receiver output
+through two amplifier stages and a bandpass filter, and attempt to measure the
+RMS voltage using an oscilloscope.  As noted above, we do not do so due to
+dysfunctional amplifiers.
 
-* Amplifier test - explain Allan variance test, but give reasonable physical numbers
+\subsection{Variance test of simulated noise}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.25]{scripts/hist_normal_m=10_n=10.pdf}
+    \includegraphics[scale=0.25]{scripts/hist_normal_m=10_n=1000.pdf}
+    \includegraphics[scale=0.25]{scripts/hist_normal_m=10_n=100000.pdf} \\
+    \textbf{Figure 5.} Histograms of $10^1, 10^3, 10^5$ $10$-sample means
+    with theoretical prediction (black line) of appropriately scaled Gaussian).
+    As we add more sample means, we converge towards a normal distribution.
+    Plot labels are catastrophically small but not really necessary anyways.
+\end{figure}
+
+As an additional exercise, we would also wish to demonstrate that the output
+receiver noise was indeed random.  To this end, we could sample the output
+noise for varying amounts of time and demonstrate that the standard deviation
+of the mean of the noise decreases as the square root of the sampling time;
+i.e., the number of samples averaged.
+
+The central limit theorem states that $m$-sample means drawn from any random
+distribution will be normally distributed around the underlying mean, and the
+normal distirbution will have standard deviation $\sigma / \sqrt{m}$, where
+$\sigma$ is the standard deviation of the underlying random distribution.  In
+Figure 5, we show that for an increasing collection of $m$-sample means, the
+histogram converges to a normal distribution ($m = 10$ fixed).
+
+Figure 6 considers the standard deviation of $10^5$ $m$-sample means for
+varying $m$.  We show that the standard deviation indeed falls off as $\sigma
+/ \sqrt{m}$, which we plot as our theoretical prediction.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{scripts/allan_variance.pdf} \\
+    \textbf{Figure 6.} Standard deviation of $10^5$ $m$-sample means scales as
+    $\sigma / \sqrt{m}$, where $\sigma = 1/sqrt{12}$ for the underlying uniform
+    distribution on $[0,1)$.
+\end{figure}
+
+The extension to characterization of receiver noise is non-trivial, but the
+conceptual idea is the same.  Sampled receiver noise should have decreasing
+spread with increasing averaging time.  Code used for simulations is available
+at \href{https://github.com/aarontran/ay121}
+{https://github.com/aarontran/ay121/lab1/scripts/central\_limit.py}.
 
 \section{Conclusion}
 
-What you're gonna do with this next.  Don't rewrite your intro/abstract.
-
-Use plain english.  Don't worry about being technical, or too concise...
-
-We are missing a substantial number of error estimates (usually numbers are
-good to the last digit, maybe $\pm 2 or 4$ in that least significant digit).
-And, we did not take many measurements to gauge our circuits' frequency
-responses in actual operation.
+Although our receiver design is flawed, we have outlined a number of simple
+fixes and improvements that would enable a better receiver to be constructed.
+We expect that an improved circuit would produce output audibly stronger than
+that due to antenna-like pickup.  We are missing a substantial number of error
+estimates and measurements to characterize receiver behavior, but we have
+provided the necessary theoretical calculations and demonstrated that, at the
+correct operating frequencies ($1 \unit{MHz}$ carrier or $10 \unit{kHz}$
+audio), our circuit is mostly functional.
 
 \section{Acknowledgments}
 
