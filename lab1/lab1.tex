@@ -56,6 +56,9 @@ Prof. Aaron Parsons, GSI Karto Keating, uGSI Baylee Bordwell
 Karto's general rule: one sent. for each sect.
 Give numbers (e.g., transmission line speed)
 
+% ============
+% INTRODUCTION
+% ============
 \section{Introduction}
 
 Modulation of radio frequency (RF) electromagnetic waves is a simple and
@@ -72,20 +75,25 @@ Here we present the design and construction of an FM receiver ($1.045
 necessary are a diode and a transistor.  The primary purpose of this circuit is for self-edification, but the layout may also serve as a starting point for
 further exploration of RF circuit design.
 
-Additional paragraphs on results
+The envelope detector as presented is unusable and requires an additional
+resistor to ground.  We additionally present simple improvements and a
+procedure to characterize receiver noise.
 
+% ==================
+% FM RECEIVER DESIGN
+% ==================
 \section{FM receiver design}
 
 The receiver is comprised of a passive RLC bandpass filter, diode envelope
 detector, and a common-emitter amplifier chained between antenna input and
-speaker output.  Blocking capacitors are placed between different functional
-sections to enable voltage biasing.
+speaker output.  Blocking capacitors between different functional sections
+enable voltage biasing.
 
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.5]{schematics/receiver_box.png} \\
-    \textbf{Figure 1.} FM receiver circuit diagram with component values. Boxes
-    demarcate functional components (see corresponding sections in text).
+    \textbf{Figure 1.} FM receiver circuit diagram with component values.\\
+    Boxes demarcate functional components (see corresponding sections in text).
 \end{figure}
 
 \subsection{Bandpass RLC filter}
@@ -97,13 +105,13 @@ and input signal component with angular frequency $\omega$, the gain of this
 filter is given by the equation:
 \[
   \left| \frac{V_{\mt{out}}}{V_{\mt{in}}} \right| =
-    \left(
+    \left[
       1 + (RC)^2 \left(\frac{\omega_0^2 - \omega^2}{\omega}\right)^2
-    \right)^{-1/2}
+    \right]^{-1/2}
 \]
 Here $\omega_0 \equiv 1 / \sqrt{LC}$, emphasizing that this filter has unity
 gain at $\omega = \omega_0$.  The $-3 \unit{dB}$ roll-off frequency occurs
-when the gain is equal to $1/\sqrt{2}$,or when:
+when the gain is equal to $1/\sqrt{2}$, or when:
 \[
   (RC) \frac{\omega_0^2-\omega^2}{\omega} = 1
 \]
@@ -113,64 +121,166 @@ $f = f_0 \pm \Delta f /2$, where $f_0 = w_0/(2\pi)$.  This gives:
   2 \pi f_0 RC \approx \frac{f_0}{\Delta f}
 \]
 as a prescription for our cut-off.  Our component values $R = 33 \unit{\Omega},
-L = 1 \unit{\mu H}, C = 22 \unit{nF}$ (Figure 1) give $f_0 = 1.073 \unit{MHz}$,
-with bandwidth $\Delta f = 220 \unit{kHz}$.  Figure 2 plots the
-frequency-dependent gain along with the transmission band of interest at $1.045
-\unit{MHz}$.
+L = 1 \unit{\mu H}, C = 22 \unit{nF}$ give $f_0 = 1.073 \unit{MHz}$ with
+bandwidth $\Delta f = 220 \unit{kHz}$.  Figure 2 plots the frequency-dependent
+gain along with the transmission band of interest at $1.045 \unit{MHz}$.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{scripts/rlc_filter_gain.pdf} \\
-    \textbf{Figure 2.} RLC filter gain as a function of input frequency $f$
-    (Hz).  FM signal bandwidth plotted in light green.
+    \includegraphics[scale=0.4]{scripts/rlc_filter_gain.pdf} \\
+    \textbf{Figure 2.} RLC filter gain against input frequency $f$ (Hz).\\
+    FM signal bandwidth plotted in light green.
 \end{figure}
-
-
 
 \subsection{Diode envelope detector}
 
-* Describe overall design of receiver, with subsections for each functional plot.  List salient features for each (-3dB point, bias voltages @ various locations, etc.). Present as if you invented it, and are writing a seminal paper (hahahaha)
+We use a diode in series with a low-pass RC filter as a rudimentary envelope
+detector.  Prior to a diode, we use a blocking capacitor and voltage divider to
+apply a bias voltage of $0.68 \unit{V}$ to the input signal; this allows the
+positive half of the signal to be passed mostly unattenuated by the diode.
 
-* Plot expected output of LC filter in receiver as function of $f$.  Mark transmission band on plot and explain rationale behind its placement on response curve.
+The blocking capacitor value is set by the behavior of the capacitor and the
+biasing voltage divider as a high pass filter.  Looking into the voltage
+divider, the resistors are seen in parallel and so the input impedance is
+about $860 \unit{\Omega}$.  To allow our carrier signal ($\sim 1 \unit{MHz}$)
+to pass, the blocking capacitance must be at least $0.2 \unit{nF}$,
+which is satisfied by our $1 \unit{\mu F}$ capacitor.
 
-* Plot bandpass of final filter that defines band of output audio signal.  Describe (maybe plot) rationale for selecting said filter.
+Our diode circuit is expected to obtain a signal envelope as follows.  The
+diode extracts only the positive half of an input signal, with the diode's knee
+voltage compensated for by our voltage biasing.  However, when the carrier
+signal peaks and begins to decrease, the RC circuit prevents the maximum
+imposed voltage from decaying immediately; it is forced to decrease over a
+timescale $RC$.  The voltage is only ``unpinned'' once the next carrier cycle
+passes through the diode.
+
+The diode is placed in series with a low-pass RC filter of cutoff frequency
+$\sim 110 \unit{kHz}$.  In actuality, the cutoff frequency should have been
+closer to $1 \unit{MHz}$ for envelope detection.  Our envelope
+detector did not operate correctly anyways, which we discuss further below.
+We plot the gain of the low-pass filter in Figure 3, to show that audible
+frequencies will not be attenuated in a correctly designed circuit.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4]{scripts/diode_rc_lowpass_gain.pdf} \\
+    \textbf{Figure 3.} Low-pass RC filter gain as a function of input frequency
+    $f$ (Hz).  Approximate human hearing range plotted in light green.
+\end{figure}
 
 \subsection{Common-emitter amplifier}
 
-* Describe speaker amplifier (circuit diagram), describe how it works, parts, bias voltages.  Define operating band - what frequency range, and what sets the bounds?
+We pass the extracted envelope curve from the diode demodulator to a
+common-emitter transistor amplifier.  Our choice of component values and
+following explanation of circuit operation are guided in large part by
+\emph{Horowitz and Hill} [1989].
 
-* Suppose speaker amplifier connects to speaker at end of long wire.  Given the circuit we built, what impedance cable do you recommend, how to terminate it (with 8-ohm speaker) to avoid reflections?  Don't worry about maximizing current through speaker.
+The transistor's quiescent base voltage is set by a biasing voltage divider,
+which controls emitter voltage.  For appropriate choice of collector and
+emitter resistors, the collector voltage amplifies the base voltage signal.
+The gain is given as $-R_c / R_e$ (where $R_c$, $R_e$ denote collector and
+emitter resistors respectively).
 
-* Specify input/output impedance of circuit at audio frequencies
+For maximal voltage swing, the quiescent collector voltage should be
+$2.5 \unit{V}$ (or, $V_{\mt{cc}}/2$).  We choose a quiescent current of
+$1 \unit{mA}$ and hence set collector resistor to $2.5 \unit{k\Omega}$.  We set
+the emitter resistor at $1.25 \unit{k\Omega}$ for a gain of $2$. The quiescent
+emitter voltage is then $1.25 \unit{V}$, and the quiescent base voltage
+should be $\sim 1.85 \unit{V}$.  We bias the base voltage using
+$22 \unit{k\Omega}$ and $13 \unit{k\Omega}$ resistors.
 
+In actual practice, we used slightly different values ($R_E = 1.5
+\unit{k\Omega}$, $R_C = 2.7 \unit{k\Omega}$, voltage divider resistors $22
+\unit{k\Omega}$ and $12 \unit{k\Omega}$).  However, our results are not
+significantly affected.
 
+The blocking capacitor prior to the amplifier biasing circuit acts as a
+high-pass filter.  The input impedance, looking into the transistor
+base, is $\sim 8 \unit{k\Omega}$ (set primarily by the two divider resistors
+in parallel).  We choose $0.68 \unit{\mu F}$ as our capacitor, which gives a
+cut-off frequency of $30 \unit{Hz}$, at the lower end of the audible range
+(cf. Figure 3).
 
+\subsection{Receiver impedances}
+
+External loads or sources (antennae, transmission lines, speakers) connected to
+our receiver should be impedance matched to maximize power throughput.
+
+The output impedance of the amplifier sets the receiver's output impedance, as
+the amplifier transistor buffers any lower impedance upstream.  In our circuit,
+the output impedance is the parallel impedance of the transistor and collector
+resistor, or roughly $2.5 \unit{k\Omega}$.  This is much larger than the $50
+\unit{\Omega}$ impedance of transmission lines, or the $8 \unit{\Omega}$
+impedance of our speaker.
+
+An emitter-follower circuit may be placed after the amplifier, then, to
+decrease the receiver's output impedance by a factor of $\sim 1/\beta$; $\beta$
+is the transistor amplification factor.  We may make further adjustments by
+placing resistors in parallel with the follower output, or adding resistors in
+series with the speaker at the end of the line (although, I'm not sure what is
+common practice).
+
+The input impedance appears more difficult to calculate.  For signals far from
+the bandpass, the LC tank circuit provides a low-impedance path to ground; for
+signals within the bandpass (i.e., where the tank circuit is resonant and
+impedes flow to ground), we would have to consider the impedance of our diode
+circuit.
+
+% =======
+% RESULTS
+% =======
 \section{Results}
 
-* Discuss transmission line results.
-
-\subsection{Demodulator debugging}
+\subsection{Receiver behavior}
 
 To test the RLC bandpass filter, we input a sine wave of varying frequencies
 and measured the output across the $LC$ tank circuit.  We obtained a maximum
 gain of $0.83$ at input frequency $1.05 \unit{MHz}$ (caveat: we may have used
 incorrect termination procedure for this measurement, but this only impacts our
-measurement of gain).  The circuit qualitatively showed the correct roll-off
-behavior.  When we input an FM signal at $1.045 \unit{MHz}$ and observed the
+gain measurement).  The circuit qualitatively showed the correct roll-off
+behavior.
+
+When we input an FM signal at $1.045 \unit{MHz}$ and observed the
 filter output on an oscilloscope, the signal was correctly converted into
-an AM signal with envelope code matching output audio.
+an AM signal with envelope code matching output audio.  We also confirmed that
+the voltage divider added a bias of approximately $0.7 \unit{V}$.
+However, the diode envelope detector appeared to flatline and output a roughly
+fixed voltage.
 
-* Explain our odd troubles with the diode detector.  Whether the circuit helped was very equivocal...
+When testing the demodulator circuit, with or without amplifier, the speaker
+appeared to output audio when connected to the circuit output.  However, we
+found that the audio level was independent of whether the circuit was powered,
+or whether the FM signal was even connected to the circuit input.
 
-\subsection{Amplifier tests}
 
-* Discuss frequency / clipping issues here?
-
-\subsection{Noise characterization}
-
-* Noise measurement
-
+% ==========
+% DISCUSSION
+% ==========
 \section{Discussion}
+
+\subsection{Envelope detector design}
+
+Basically, I think we needed a path to ground.
+
+\subsection{Common-emitter amplifier design}
+
+The common-emitter amplifier gain may be improved by adding an emitter
+capacitor ($C_E$) in parallel with the resistor capacitor.  The new gain is:
+\[
+  \left| \frac{V_\mt{out}}{V_\mt{in}} \right|
+    = \left[ \left(\frac{R_C}{R_E}\right)^2
+      + \omega^2 R_C^2 C_E^2 \right]^{1/2}
+\]
+By choosing $C_E = 50 \unit{nF}$, we were able to observe 10x gain at input
+frequency $10 \unit{kHz}$.  However, the gain with capacitor preferentially
+amplifies higher frequencies.
+
+
+\subsection{Noise simulation and characterization}
+Blah amplifiers, bandwidth and Johnson-Nyquist noise, oscilloscope noise.
+
+Thermal noise, resistor.
+
 
 * Amplifier test - explain Allan variance test, but give reasonable physical numbers
 
@@ -180,10 +290,22 @@ What you're gonna do with this next.  Don't rewrite your intro/abstract.
 
 Use plain english.  Don't worry about being technical, or too concise...
 
+We are missing a substantial number of error estimates (usually numbers are
+good to the last digit, maybe $\pm 2 or 4$ in that least significant digit).
+And, we did not take many measurements to gauge our circuits' frequency
+responses in actual operation.
+
 \section{Acknowledgments}
 
-Circuit diagrams were generated using Fritzing.
+Thanks to Patrick and Kyle for much patience and lots of time spent working in
+lab.  Much thanks to Baylee, Karto, and Prof. Parsons for answering our
+questions and helping us root out some mistakes (though not all, as evidenced
+here).  Other lab members are thanked for discussions of variable seriousness
+and positive utility.
 
 \section{References}
+
+\hangindent 0.25in Horowitz, P. and W. Hill (1989), \emph{The Art of
+Electronics}, Cambridge Univ. Press, Cambridge, UK.
 
 \end{document}
