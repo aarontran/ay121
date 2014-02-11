@@ -53,8 +53,15 @@ Prof. Aaron Parsons, GSI Karto Keating, uGSI Baylee Bordwell
 
 \section*{\sffamily Abstract}
 
-Karto's general rule: one sent. for each sect.
-Give numbers (e.g., transmission line speed)
+We present and detail the design of a $1.045 \unit{MHz}$ FM receiver with
+bandwidth $200 \unit{kHz}$.  The filter is composed of a bandpass RLC filter,
+diode envelope detector, and common-emitter transistor amplifier with gain 2.
+Input and output impedances are not matched to appropriate loads or sources but
+may be matched by use of emitter-followers or appropriate resistors.  The diode
+detector as presented and tested is unusable, but we present a possible
+solution as well as an improvement for the common-emitter amplifier.  We
+additionally provide a simple procedure to characterize random noise using the
+central limit theorem.
 
 % ============
 % INTRODUCTION
@@ -76,8 +83,8 @@ necessary are a diode and a transistor.  The primary purpose of this circuit is 
 further exploration of RF circuit design.
 
 The envelope detector as presented is unusable and requires an additional
-resistor to ground.  We additionally present simple improvements and a
-procedure to characterize receiver noise.
+resistor to ground.  We present simple improvements for the envelope detector
+and amplifier, and provide a procedure to characterize receiver noise.
 
 % ==================
 % FM RECEIVER DESIGN
@@ -231,8 +238,6 @@ circuit.
 % =======
 \section{Results}
 
-\subsection{Receiver behavior}
-
 To test the RLC bandpass filter, we input a sine wave of varying frequencies
 and measured the output across the $LC$ tank circuit.  We obtained a maximum
 gain of $0.83$ at input frequency $1.05 \unit{MHz}$ (caveat: we may have used
@@ -252,6 +257,11 @@ appeared to output audio when connected to the circuit output.  However, we
 found that the audio level was independent of whether the circuit was powered,
 or whether the FM signal was even connected to the circuit input.
 
+The common-emitter amplifier begins clipping at input of
+$1.4 \unit{V_{\mt{pp}}}$; this corresponded to output
+$2.34 \unit{V_{\mt{pp}}}$.  At this input, there appeared to be a very small
+voltage difference between collector and emitter.
+For smaller voltages at $10 \unit{kHz}$ it functioned correctly.
 
 % ==========
 % DISCUSSION
@@ -260,23 +270,88 @@ or whether the FM signal was even connected to the circuit input.
 
 \subsection{Envelope detector design}
 
-Basically, I think we needed a path to ground.
+The fatal flaw in our envelope detector is, simply, that there is no path to
+ground. After a cycle maximum, the voltage at the back of the diode decreases,
+but the voltage at the front of the diode is held constant by the filter and
+blocking capacitors, which can only discharge through diode leakage current at
+sufficiently low input frequencies.
+
+The traditional resolution to this problem is to neglect the series resistor
+(in the low-pass RC filter) and instead place a resistor in parallel to ground.
+As before, the characteristic time $RC$ should be comparable with the timescale
+of carrier wave oscillations (i.e., $1 / (1 \unit{MHz})$).  Unfortunately, we
+neglected this and so our circuit design is inoperable.
 
 \subsection{Common-emitter amplifier design}
 
-The common-emitter amplifier gain may be improved by adding an emitter
-capacitor ($C_E$) in parallel with the resistor capacitor.  The new gain is:
+Without the bypass capacitor, the amplifier frequency bounds are set by 1. high
+pass filter of blocking capacitor and bias divider, and 2. stray circuit and/or
+transistor capacitance.  We did not collect measurements to characterize
+frequency dependence of amplification in our actual circuit, however.
+
+Although effective, the amplifier design presented can only tolerate so much
+gain.  As the emitter resistor is made smaller, the current flow is
+increasingly influenced by the temperature dependent transistor resistance
+($r_e$), as described by the transconductance model [\textit{Horowitz and
+Hill}, 1989]. The biasing circuit exerts less control on the emitter voltage
+and so the circuit is less reliable.
+
+Both gain and stability may be improved by adding an emitter capacitor ($C_e$)
+in parallel with the resistor capacitor.  The new gain is:
 \[
   \left| \frac{V_\mt{out}}{V_\mt{in}} \right|
-    = \left[ \left(\frac{R_C}{R_E}\right)^2
-      + \omega^2 R_C^2 C_E^2 \right]^{1/2}
+    = \left[ \left(\frac{R_c}{R_e}\right)^2
+      + \omega^2 R_c^2 C_e^2 \right]^{1/2}
 \]
-By choosing $C_E = 50 \unit{nF}$, we were able to observe 10x gain at input
+By choosing $C_e = 50 \unit{nF}$, we were able to observe 10x gain at input
 frequency $10 \unit{kHz}$.  However, the gain with capacitor preferentially
-amplifies higher frequencies.
+amplifies higher frequencies, and we have neglected transistor resistance
+$r_e$.
 
+We may address both issues by placing an emitter resistor in series with a
+bypassed emitter resistor (Figure 4).  The following analysis, again, is
+largely informed by \textit{Horowitz and Hill} [1989].
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{schematics/amplifier_bypass.pdf} \\
+    \textbf{Figure 4.} Circuit schematic of common-emitter amplifier \\
+    with partially-bypassed emitter resistor.
+\end{figure}
+
+The gain of this circuit (not bothering to take an absolute value) is
+\[
+  \frac{V_\mt{out}}{V_\mt{in}}
+    = \frac{R_c} { R_e + (R_b)/(1+j\omega R_b C_e) }
+\]
+where $j$ is the imaginary unit, and we have denoted the bypassed resistor by
+$R_b$.  We have neglected transistor resistance $r_e$, which may be included
+via $R_e$ if desired.  For sufficiently large $\omega$, the
+term $R_b/(1+j\omega R_e C_e)$ becomes unimportant and the gain reduces to
+$R_c / R_e$.  However, the quiescent voltage is set by $R_e + R_b$, which
+improves stability (e.g., reduces likelihood of current saturation).
+
+To obtain a stable gain over the frequency band of interest, we need only
+consider the lowest frequency $\omega_{\mt{min}}$ and impose the condition
+\[
+  \frac{R_b^2}{1 + \omega_{\mt{min}}^2 R_b^2 C_e^2} << R_e^2
+\]
+For $R_c = 2.5 \unit{k\Omega}$ and $\omega_{\mt{min}} = 20 \unit{Hz}$, we might
+pick $R_e = 250$, $R_b = 1 \unit{k\Omega}$ and $C_e = 32 \unit{\mu F}$.  This
+would give a stable gain of $10$ for all frequencies above $\sim 20 \unit{Hz}$.
 
 \subsection{Noise simulation and characterization}
+
+We attempted to quantify the Johnson-Nyquist noise in a resistor and in our
+receiver by using two amplifier stages, each with gain $24.5 \unit{dB}$ at
+frequencies below $1.2 \unit{GHz}$.  In the process, we discovered that a
+majority of available commercial amplifiers were dysfunctional and that we
+could not obtain any amplification.  Nevertheless, we present some theoretical
+calculations, simulations, and a procedure for estimating the noise figure of
+our receiver.
+
+
+
 Blah amplifiers, bandwidth and Johnson-Nyquist noise, oscilloscope noise.
 
 Thermal noise, resistor.
@@ -297,11 +372,10 @@ responses in actual operation.
 
 \section{Acknowledgments}
 
-Thanks to Patrick and Kyle for much patience and lots of time spent working in
-lab.  Much thanks to Baylee, Karto, and Prof. Parsons for answering our
-questions and helping us root out some mistakes (though not all, as evidenced
-here).  Other lab members are thanked for discussions of variable seriousness
-and positive utility.
+Thanks to Patrick and Kyle for much patience and time in lab.  Much thanks to
+Baylee, Karto, and Prof. Parsons for answering our questions and helping us
+root out some mistakes (though not all, as evidenced here).  Other lab members
+are thanked for discussions of variable seriousness and positive utility.
 
 \section{References}
 
