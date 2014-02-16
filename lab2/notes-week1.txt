@@ -1,0 +1,34 @@
+Sampling using SRS local oscillator #1
+
+f_samp = 8.8 MHz
+We sample waveforms with f = {0.1, 0.4, 0.7, 0.9, 1, 3} * f_samp
+Take 1024 samples each
+
+ssh atran@ttauri.ugastro.berkeley.edu
+ssh sirius
+ipython
+import DFEC
+fsamp = 8.8e6
+DFEC.set_srs(1, freq=0.1*fsamp, vpp=1, off=0, pha=0)
+DFEC.sampler(1024, fsamp)
+
+Rinse, repeat, save data (done by Vikram)
+
+V_pp = 1 V (nominally, not always case in actuality)
+Oscilloscope measurements/checks of data, using oscope setting (measurement)
+
+f/f_samp    period
+0.1         1.136 \pm 0.004 \mu s (may need to double check this uncert.)
+0.4         284 \pm 2 ns
+0.7         162.5 \pm 2 ns
+0.9         126.1 \pm 0.6 ns
+1           113.6 \pm 0.4 ns
+3           37.9 \pm 0.4 ns
+
+Using data from npz
+
+import numpy as np
+data = np.load('lab_digital_sampling.npz')
+# this gives a dict with each array, keys are
+# arr_0
+# arr_1
