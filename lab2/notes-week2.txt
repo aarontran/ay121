@@ -1,0 +1,51 @@
+Lab 2, Week 2 mixing
+====================
+
+analog_mixing.npz
+
+    Analog mixing data
+    Input signals are 0 dBm
+    Collected 1024 samples at 10 MHz
+    
+    import numpy as np
+    data = np.load('analog_mixing.npz')
+    data['arr_0']  # 1 MHz, 1.05 MHz
+    data['arr_1']  # 1 MHz, 0.95 MHz (I think...? swapped order?)
+    data['arr_2']  # 100 kHz, 105 kHz
+    data['arr_3']  # 100 kHz, 95 kHz
+
+adc_bram_1
+adc_bram_2
+
+    Tests of ROACH ADC with single sinusoid (1 MHz)
+    ROACH sampler gives
+    2048 samples collected at 200 MHz
+    (so we can fit ~5 cycles of 0.5 MHz signal, or ~2 cycles of 0.2 MHz)
+    (limits the lowest frequencies we can visually observe)
+
+mix_high_05pct
+mix_high_05pct_12dbm
+mix_high_10pct
+mix_high_50pct
+mix_high_50pct_12dbm
+mix_low_05pct
+mix_low_05pct_12dbm
+mix_low_10pct
+mix_low_50pct
+mix_low_50pct_12dbm
+
+    Using ROACH to digitally mix two analog inputs
+    Signal 1 is held to 1 MHz
+    High/low indicates whether signal 2 is above/below 1 MHz
+    ##pct indicates how much above/below 1 MHz
+    (e.g., high_05pct --> 1.05 MHz
+            low_50pct --> 0.50 MHz)
+    Signals at -10 dBm or -12 dBm (if flagged)
+
+cos_bram
+sin_bram
+
+    Digital mixing with ROACH LO
+    lo_freq = 2 to give LO freq ~ 1.56 MHz (f_clk / 128)
+    Input analog signal is (I think..) 1 MHz at -30 dBM (!)
+    -20 dBm, -12 dBm looked awful.

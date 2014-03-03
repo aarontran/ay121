@@ -1,0 +1,43 @@
+Lab 2, week 3 DDC notes
+=======================
+
+FIR filter implementation
+I think we calculated coefficients as:
+sinc(5/8 * {-4,-3,-2,-1, 0, 1, 2, 3} )
+= sin (5/8 * n) / (5/8 *n)
+(should it be sin (5/8 * pi *n) / (5/8 * pi * n) ???)
+Coefficients:
+{0.239389, 0.508846, 0.759187, 0.936155, 1., 0.936155, 0.759187, 0.508846}
+
+Binary representations (not truncated) from
+http://www.mathsisfun.com/binary-decimal-hexadecimal-converter.html:
+(too lazy to write script to convert numbers)
+
+0.0011110101001000100110001111011
+0.1000001001000011101110110100000
+0.1100001001011010000101000100100
+0.1110111110100111110110101010010
+0.1111111111111111111111111111111
+(repeat, going back up list omitting last one)
+
+Hex representation
+echo -ne '\xFF\xFC\x7A\x91' > coefficient_whatever
+
+\xFF\xFC\x7A\x91
+\xFF\xFD\x04\x87
+\xFF\xFD\x84\xB4
+\xFF\xFD\xDF\x4F
+\xFF\xFD\xFF\xFF
+\xFF\xFD\xDF\x4F
+\xFF\xFD\x84\xB4
+\xFF\xFD\x04\x87
+
+Finally, the input signals that we 1. mix with ROACH LO, and 2. FIR filter
+lo_freq = 10, 20, 30, 40, 50, 60
+
+echo -ne '\x00\x00\x00\x0a' > lo_freq
+echo -ne '\x00\x00\x00\x14' > lo_freq
+echo -ne '\x00\x00\x00\x1e' > lo_freq
+echo -ne '\x00\x00\x00\x28' > lo_freq
+echo -ne '\x00\x00\x00\x32' > lo_freq
+echo -ne '\x00\x00\x00\x3c' > lo_freq

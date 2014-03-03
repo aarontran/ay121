@@ -9,6 +9,8 @@ ugradio
 __pycache__/
 *.py[cod]
 
+# iPython
+.ipynb_checkpoints
 
 # Core latex/pdflatex auxiliary files:
 *.aux
