@@ -1440,8 +1440,7 @@ input.engine_num_input{height:20px;margin-bottom:2px;padding-top:0;padding-botto
 .ansibgpurple{background-color:magenta;}
 .ansibgcyan{background-color:cyan;}
 .ansibggray{background-color:gray;}
-.cell{border:1px solid transparent;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;width:100%;}.cell.selected{border-radius:4px;border:thin #ababab solid;}
-div.cell{width:100%;padding:5px 5px 5px 0px;margin:2px 0px 2px 7px;outline:none;}
+div.cell{border:1px solid transparent;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;width:100%;padding:5px 5px 5px 0px;margin:2px 0px 2px 7px;outline:none;}div.cell.selected{border-radius:4px;border:thin #ababab solid;}
 div.prompt{width:11ex;padding:0.4em;margin:0px;font-family:monospace;text-align:right;line-height:1.231em;}
 .celltoolbar{border:thin solid #CFCFCF;border-bottom:none;background:#EEE;border-top-right-radius:3px;border-top-left-radius:3px;width:100%;-webkit-box-pack:end;height:22px;}
 .no_input_radius{border-top-right-radius:0px;border-top-left-radius:0px;}
@@ -1700,7 +1699,7 @@ init_mathjax();
 <p>Some links and things for reference (getting familiar with notebook interface) follow:</p>
 <ul>
 <li><a href="http://ipython.org/ipython-doc/stable/interactive/notebook.html">iPython docs</a></li>
-<li><p><a href="http://daringfireball.net/projects/markdown/syntax#link">Markdown syntax</a></p></li>
+<li><p><a href="http://daringfireball.net/projects/markdown/syntax">Markdown syntax</a></p></li>
 <li><code>Ctrl-m h</code> -- show all shortcuts</li>
 <li><code>Ctrl-m s</code> -- save</li>
 <li><code>Shft-enter</code> -- run cell</li>
@@ -1723,7 +1722,7 @@ init_mathjax();
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[1]:
+In&nbsp;[52]:
 </div>
 <div class="input_area box-flex1">
 <div class="highlight"><pre><span class="c"># Using Mac OSX backend -- inline subplots look terrible</span>
@@ -1731,7 +1730,7 @@ In&nbsp;[1]:
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;../data-week1/lab_digital_sampling.npz&#39;</span><span class="p">)</span>
 
-<span class="n">fsamp</span> <span class="o">=</span> <span class="mf">8.8e6</span>
+<span class="n">fsamp</span> <span class="o">=</span> <span class="mf">10e6</span>
 <span class="n">nsamp</span> <span class="o">=</span> <span class="mi">1024</span>
 <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nsamp</span><span class="p">)</span><span class="o">/</span><span class="n">fsamp</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="c"># Microseconds</span>
 <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">fsamp</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">fsamp</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">2.</span><span class="o">/</span><span class="n">nsamp</span><span class="p">),</span> <span class="mi">1024</span><span class="p">)</span>
@@ -1764,7 +1763,7 @@ Populating the interactive namespace from numpy and matplotlib
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[2]:
+In&nbsp;[53]:
 </div>
 <div class="input_area box-flex1">
 <div class="highlight"><pre><span class="c"># Takes a 1-D ndarray, and nu</span>
@@ -1820,16 +1819,20 @@ In&nbsp;[4]:
 
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Plot-all-signals-and-power-spectra">Plot all signals and power spectra<a class="anchor-link" href="#Plot-all-signals-and-power-spectra">&#182;</a></h2>
+<h2 id="Plot-all-signals-and-power-spectra-(geez-this-is-ugly)">Plot all signals and power spectra (geez this is ugly)<a class="anchor-link" href="#Plot-all-signals-and-power-spectra-(geez-this-is-ugly)">&#182;</a></h2>
 </div>
 
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[68]:
+In&nbsp;[79]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.3</span><span class="p">,</span><span class="mf">8.8</span><span class="p">))</span>  <span class="c"># Full page figure</span>
+<div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>  <span class="c"># Full page figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span> <span class="o">=</span> <span class="mf">0.14</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="mf">0.08</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="mf">0.97</span><span class="p">,</span>
+    <span class="n">wspace</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span> <span class="n">hspace</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">subplot_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="s">&#39;e&#39;</span><span class="p">,</span> <span class="s">&#39;f&#39;</span><span class="p">]</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
     <span class="n">sig</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;arr_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
@@ -1839,21 +1842,26 @@ In&nbsp;[68]:
     <span class="c"># Signal / time-domain plot</span>
     <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># The woes of 1-based indexing :P</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="s">&#39;-ko&#39;</span><span class="p">)</span>
-    
     <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.8</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="c"># Subplot letter labels</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.065</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">,</span> <span class="n">subplot_labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="s">&#39;bold&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax1</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.115</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">,</span> <span class="n">subplot_labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="s">&#39;bold&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax1</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
     
     <span class="c"># Power spectrum / freq-domain plot</span>
     <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqs</span><span class="o">/</span><span class="p">(</span><span class="mf">1e6</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">freq_spectrum</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;-k&#39;</span><span class="p">)</span>
-    
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">4.4</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
-    <span class="n">ax2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">LogLocator</span><span class="p">(</span><span class="n">numticks</span><span class="o">=</span><span class="mi">7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.065</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">,</span> <span class="n">subplot_labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="s">&#39;bold&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax2</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
     
-    <span class="c"># Remove x tick labels everywhere but bottom row</span>
+    <span class="c"># Remove x tick labels if not on bottom row</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">5</span><span class="p">:</span>
         <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
@@ -1865,33 +1873,27 @@ In&nbsp;[68]:
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">r&#39;Frequency (MHz)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
 <span class="c"># y axis labels</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.45</span><span class="p">)</span>
 <span class="n">ylabel1</span> <span class="o">=</span> <span class="s">r&#39;Voltage ($\mathrm{V}$)&#39;</span>
 <span class="n">ylabel2</span> <span class="o">=</span> <span class="s">r&#39;Power spectral density ($\mathrm{V}^2 \mathrm{Hz}^{-1}$)&#39;</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">ylabel1</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.49</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">ylabel2</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.038</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">ylabel1</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.525</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">ylabel2</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="s">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
 <span class="c"># f_sig labels</span>
-<span class="c"># this took longer than it should have</span>
-<span class="c"># Absolute text placements look nice on generated plots, but then misplaced on saved output!</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.71</span><span class="p">,</span> <span class="mf">0.874</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{signal}} = 0.1 f_{\mathrm{samp}}$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.71</span><span class="p">,</span> <span class="mf">0.662</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{signal}} = 0.4 f_{\mathrm{samp}}$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.717</span><span class="p">,</span> <span class="mf">0.526</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{signal}} = 0.7 f_{\mathrm{samp}}$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.722</span><span class="p">,</span> <span class="mf">0.464</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{signal}} = 0.9 f_{\mathrm{samp}}$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.746</span><span class="p">,</span> <span class="mf">0.328</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{signal}} = f_{\mathrm{samp}}$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.188</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{signal}} = 3 f_{\mathrm{samp}}$&#39;</span><span class="p">)</span>
+<span class="c"># This took longer than it should have</span>
+<span class="c"># Absolute text placements look nice on generated plots, but are misplaced on saved output</span>
+<span class="c"># I list the idealized input frequencies, do not correspond to oscilloscope measurements</span>
+<span class="c"># But, they are close enough that it should not matter.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.78</span><span class="p">,</span> <span class="mf">0.862</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{sig}} = 0.88 \,\mathrm{MHz}$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.78</span><span class="p">,</span> <span class="mf">0.710</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{sig}} = 3.52 \,\mathrm{MHz}$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.78</span><span class="p">,</span> <span class="mf">0.555</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{sig}} = 6.16 \,\mathrm{MHz}$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.78</span><span class="p">,</span> <span class="mf">0.485</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{sig}} = 7.92 \,\mathrm{MHz}$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.335</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{sig}} = 8.8 \,\mathrm{MHz}$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figtext</span><span class="p">(</span><span class="mf">0.78</span><span class="p">,</span> <span class="mf">0.100</span><span class="p">,</span> <span class="s">r&#39;$f_{\mathrm{sig}} = 26.4 \,\mathrm{MHz}$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">plt.figtext(0.71, 0.861, r&#39;$f_{\mathrm{signal}} = 0.1 f_{\mathrm{samp}}$&#39;)</span>
-<span class="sd">plt.figtext(0.71, 0.651, r&#39;$f_{\mathrm{signal}} = 0.4 f_{\mathrm{samp}}$&#39;)</span>
-<span class="sd">plt.figtext(0.717, 0.512, r&#39;$f_{\mathrm{signal}} = 0.7 f_{\mathrm{samp}}$&#39;)</span>
-<span class="sd">plt.figtext(0.722, 0.452, r&#39;$f_{\mathrm{signal}} = 0.9 f_{\mathrm{samp}}$&#39;)</span>
-<span class="sd">plt.figtext(0.75, 0.315, r&#39;$f_{\mathrm{signal}} = f_{\mathrm{samp}}$&#39;)</span>
-<span class="sd">plt.figtext(0.6, 0.175, r&#39;$f_{\mathrm{signal}} = 3 f_{\mathrm{samp}}$&#39;)</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="c"># plt.savefig(&#39;nyquist_plots.pdf&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;nyquist_plots.pdf&#39;</span><span class="p">)</span>
+<span class="c">#plt.show()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">!</span>open nyquist_plots.pdf
 </pre></div>
 
 </div>
@@ -1904,9 +1906,13 @@ In&nbsp;[68]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-Frequency peak for arr_0 at 764843.75
-Frequency peak for arr_1 at 3093750.0
-Frequency peak for arr_2 at 3368750.0
+Frequency peak for arr_0 at 869140.625
+Frequency peak for arr_1 at 3515625.0
+Frequency peak for arr_2 at 3828125.0
+Frequency peak for arr_3 at 2089843.75
+Frequency peak for arr_4 at -1210937.5
+Frequency peak for arr_5 at 3613281.25
+
 </pre>
 </div>
 </div>
@@ -1915,14 +1921,163 @@ Frequency peak for arr_2 at 3368750.0
 </div>
 
 </div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Additional-items">Additional items<a class="anchor-link" href="#Additional-items">&#182;</a></h2>
+</div>
+
+<div class="text_cell_render border-box-sizing rendered_html">
+<ol style="list-style-type: decimal">
+<li>locating aliased frequencies</li>
+<li>decreased spectral leakage in Figure 1d.</li>
+<li>uncertainty in input frequencies (from oscilloscope measurements)</li>
+</ol>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Where should the aliased frequencies appear?</p>
+<p>Ah, I figured it out -- it looks like, despite our best intentions, Pulsar (the ADC's host computer) was insolently sampling at 10 MHz (or we made a mistake and forgot to command it to sample correctly). However, we were feeding in signals at fractions of 8.8 MHz, which we had verified using the oscilloscope. So now this makes sense...</p>
+</div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[9]:
+In&nbsp;[130]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre>
+<div class="highlight"><pre><span class="n">fsamp_wrong</span> <span class="o">=</span> <span class="mf">8.8e6</span>
+<span class="n">T_scope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.136</span><span class="p">,</span> <span class="mf">0.284</span><span class="p">,</span> <span class="mf">0.162</span><span class="p">,</span> <span class="mf">0.126</span><span class="p">,</span> <span class="mf">0.114</span><span class="p">,</span> <span class="mf">0.038</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e-6</span>  <span class="c"># Microseconds</span>
+<span class="n">freqs_scope</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">T_scope</span>  <span class="c"># MHz</span>
+
+<span class="k">print</span> <span class="s">&#39;Scope-measured input frequencies: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">freqs_scope</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">)</span>  <span class="c"># Output in MHz</span>
+<span class="k">print</span> <span class="s">&#39;As fractions of fsamp_wrong: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">freqs_scope</span> <span class="o">/</span> <span class="n">fsamp_wrong</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;&#39;</span>
+<span class="k">print</span> <span class="s">&#39;The 0.1 fsamp signal should be at &#39;</span> <span class="o">+</span> <span class="nb">str</span> <span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">fsamp_wrong</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;The 0.4 fsamp signal should be at &#39;</span> <span class="o">+</span> <span class="nb">str</span> <span class="p">(</span><span class="mf">0.4</span><span class="o">*</span><span class="n">fsamp_wrong</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;The 0.7 fsamp signal should be at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">fsamp</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="n">fsamp_wrong</span> <span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;The 0.9 fsamp signal should be at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">fsamp</span> <span class="o">-</span> <span class="mf">0.9</span><span class="o">*</span><span class="n">fsamp_wrong</span> <span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;The 1 fsamp signal should be at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">fsamp</span> <span class="o">-</span> <span class="mi">1</span><span class="o">*</span><span class="n">fsamp_wrong</span> <span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;The 3 fsamp signal should be at &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">fsamp</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">fsamp_wrong</span><span class="p">)</span>
 </pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+Scope-measured input frequencies: [  0.88028169   3.52112676   6.17283951   7.93650794   8.77192982
+  26.31578947]
+As fractions of fsamp_wrong: [ 0.10003201  0.40012804  0.70145903  0.9018759   0.99681021  2.99043062]
+
+The 0.1 fsamp signal should be at 880000.0
+The 0.4 fsamp signal should be at 3520000.0
+The 0.7 fsamp signal should be at 3840000.0
+The 0.9 fsamp signal should be at 2080000.0
+The 1 fsamp signal should be at 1200000.0
+The 3 fsamp signal should be at 3600000.0
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Why does the spectrum for Figure 1d. have decreased spectral leakage? I hypothesize that, by some sort of sheer luck, we landed right at or very near one of the DFT's frequency bins. Let's check this.</p>
+<p>There is some uncertainty in the exact frequency we are feeding in, and that uncertainty is comparable to a bin size. So, I don't think we can predict where we'll land on a bin, it just happens by chance.</p>
+<p>My scripting printout here is horrific.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[128]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">freq_res</span> <span class="o">=</span> <span class="n">fsamp</span><span class="o">/</span><span class="n">nsamp</span>
+<span class="k">print</span> <span class="s">&#39;Frequency resolution (bin size): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;&#39;</span>
+<span class="k">print</span> <span class="s">&#39;Fig 1c, theoretical expectation of # of bins: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">fsamp</span><span class="o">-</span><span class="mf">6.16e6</span><span class="p">)</span><span class="o">/</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;Fig 1c, oscope expectation of # of bins: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">fsamp</span><span class="o">-</span><span class="mf">6.17284e6</span><span class="p">)</span><span class="o">/</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;Fig 1c, spectrum measurement of # of bins: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mf">3828125.0</span><span class="o">/</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;&#39;</span>
+<span class="k">print</span> <span class="s">&#39;Fig 1d, theoretical expectation of # of bins: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">fsamp</span><span class="o">-</span><span class="mf">7.92e6</span><span class="p">)</span><span class="o">/</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;Fig 1d, oscope expectation of # of bins: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">fsamp</span><span class="o">-</span><span class="mf">7.9365e6</span><span class="p">)</span><span class="o">/</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;Fig 1d, spectrum measurement of # of bins: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mf">2089843.75</span><span class="o">/</span><span class="n">freq_res</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;&#39;</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">&#39;Rough freq. uncertainty for Fig 1d, oscope measurement (Hz): &#39;</span>
+    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mf">126.7e-9</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mf">125.5e-9</span><span class="p">))</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="p">)</span>  <span class="c"># 0.6 nanosec</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">&#39;Rough freq. uncertainty for Fig 1d, oscope measurement (bins): &#39;</span>
+    <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="nb">abs</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mf">126.7e-9</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mf">125.5e-9</span><span class="p">))</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">/</span><span class="n">freq_res</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+Frequency resolution (bin size): 9765.625
+
+Fig 1c, theoretical expectation of # of bins: 393.216
+Fig 1c, oscope expectation of # of bins: 391.901184
+Fig 1c, spectrum measurement of # of bins: 392.0
+
+Fig 1d, theoretical expectation of # of bins: 212.992
+Fig 1d, oscope expectation of # of bins: 211.3024
+Fig 1d, spectrum measurement of # of bins: 214.0
+
+Rough freq. uncertainty for Fig 1d, oscope measurement (Hz): 37733.8318392
+Rough freq. uncertainty for Fig 1d, oscope measurement (bins): 3.86394438033
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Estimates of uncertainties in input frequency; values taken from 'notes-week1.txt'</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[126]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">T_scope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.136</span><span class="p">,</span> <span class="mf">0.284</span><span class="p">,</span> <span class="mf">0.1625</span><span class="p">,</span> <span class="mf">0.1261</span><span class="p">,</span> <span class="mf">0.1136</span><span class="p">,</span> <span class="mf">0.0379</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e-6</span>  <span class="c"># Microseconds</span>
+<span class="n">T_scope_uncerts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e-9</span>  <span class="c"># Nanoseconds</span>
+<span class="n">freqs_scope</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">T_scope</span>  <span class="c"># MHz</span>
+<span class="n">freqs_scope_uncerts</span> <span class="o">=</span> <span class="n">freqs_scope</span> <span class="o">*</span> <span class="n">T_scope_uncerts</span> <span class="o">/</span> <span class="n">T_scope</span>
+<span class="k">print</span> <span class="s">&#39;Abs. uncertainties in freqs (MHz): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">freqs_scope_uncerts</span><span class="o">/</span><span class="mf">1e6</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;Rel. uncertainties in freqs (-): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">T_scope_uncerts</span> <span class="o">/</span> <span class="n">T_scope</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+Abs. uncertainties in freqs: [ 0.00309958  0.02479667  0.07573964  0.03773298  0.03099583  0.27847202]
+Rel. uncertainties in freqs: [ 0.00352113  0.00704225  0.01230769  0.00475813  0.00352113  0.01055409]
+
+</pre>
+</div>
+</div>
 
 </div>
 </div>
