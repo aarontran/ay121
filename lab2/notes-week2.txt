@@ -47,5 +47,12 @@ sin_bram
 
     Digital mixing with ROACH LO
     lo_freq = 2 to give LO freq ~ 1.56 MHz (f_clk / 128)
-    Input analog signal is (I think..) 1 MHz at -30 dBM (!)
+    Input analog signal is (I think..) 1 MHz at -30 dBm (!)
     -20 dBm, -12 dBm looked awful.
+
+    (March 3, 2014)
+    
+    REPLACED with good data
+    lo_freq = 8
+    Input analog signal is 10 MHz at -10 dBm
+    Looks much better!!!!!
