@@ -1,0 +1,58 @@
+Quick calculation of numbers
+from data_sun_test_140321.npz
+=============================
+
+Start of plot (10:50am, Fri 3/21): 23 cycles / 1000 seconds = 0.023 Hz
+End of plot (12:30pm, Fri 3/21):   18 cycles /  700 seconds = 0.026 Hz
+
+Sun coords at 2014-03-21 10:50:00
+    (ra, dec) = 0:03:46.98, 0:24:29.1
+    (ra, dec) = 0.0165067825759, 0.00712226769871 (radians)
+    LST = 21.83639362 * 2*pi/24
+    HA = LST - RA = 5.717 - 0.017 = 5.7
+Sun coords at 2014-03-21 12:30:00
+    (ra,dec) = 0:04:01.98, 0:26:07.8
+    (ra,dec) = 0.0175974929749, 0.00760086308241 (radians)
+    LST = 23.30234074 * 2*pi/24
+    HA = LST - RA = 6.100 - 0.018 = 6.08
+
+
+Interferometer
+==============
+\nu ~= 11 GHz, \lambda = 2.7 cm (maybe 2.8 cm).  B_y / \lambda ~= 370
+
+E_1 * E_2 = stuff ~= cos( 2*pi* (B_y/\lambda \cos\delta) \sin (h_s))
+    B_y = baseline length = 10 m
+    \lambda = wavelength = 2.7 cm
+    \delta = declination
+    h_s = hour angle = local sidereal time - right ascension
+
+2*pi*B/lambda cos(dec) sin(ha) ~= 2*pi* f_fringe * time
+
+f_fringe * t = B/lambda * cos(dec) * cos(ha) * (delta hr angle)
+             = B/lambda * cos(dec) * cos(ha) * (time [s]) / (24 hr) * (2*pi)
+
+f_fringe = B/lambda cos(dec) cos(ha) 2*pi / (24*3600)
+         = 0.027 * cos(dec) * cos(ha)
+
+cos(dec) = cos(0.007 rad) ~ 0.99999  # just about 1 for our observations
+cos(ha) ~ 0.83 to 0.98
+
+0.83 * 0.027 = 0.022
+0.98 * 0.027 = 0.026
+
+Just about spot on!  :)
+
+Orion data
+==========
+Looks like a bloody mess, but there is a weak signal at
+f = 0.02556
+
+LST ~ 3 to 5.5, RA = 05:35:17.3 hrs, dec = -05:23:28 deg
+
+cos(ha) ~ cos(-0.6545) to cos(0) ~ 0.8 to 1
+cos(dec) = cos(0.093) ~ 0.995
+
+So again... we are getting a reasonable number since Orion has small dec.
+But the data is terribly noisy, I don't know what it means.
+

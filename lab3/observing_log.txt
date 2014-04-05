@@ -1,0 +1,124 @@
+================================
+Plaintext log for observing runs
+(target, start, end, notes, etc)
+================================
+
+
+start = '2014/03/21 10:50'
+stop = '2014/03/21 12:30'
+target = ephem.Sun()
+sun_moon = (True, False)
+
+fname = 'data_sun_test_140321.npz'
+fname_log = 'log_sun_test_140321.txt'
+fname_err = 'log_sun_test_err_140321.txt'
+
+init_time = date_from_pdt('2014/03/21 00:00')
+ay121_ephem.get_sky_times(obs, target, init_time)
+
+# observing_run(obs, target, start, stop, fname, fname_log, fname_err,
+#               sun_moon)
+
+# observing_run(obs, target=catalog.orion(),
+#               startstr = '2014/03/21 15:52:00',
+#               stopstr = '2014/03/21 23:00:47',
+#               fname = 'data_orion_140321.npz',
+#               log = 'log_orion_140321.txt',
+#               errlog = 'log_orion_err_140321.txt',
+#               flags = (False, False))
+
+# stopped ~ 1920 PDT, data looks strange
+# observing_run(obs, target=catalog.orion(),
+#               startstr = '2014/03/21 15:52:00',
+#               stopstr = '2014/03/21 23:00:47',
+#               fname = 'data_orion_140321_2.npz',
+#               log = 'log_orion_140321_2.txt',
+#               errlog = 'log_orion_err_140321_2.txt',
+#               flags = (False, False))
+
+# INTERRUPTED CONFLICTED WITH LEO'S DATA
+# Terminated 10:33:30 UTC
+# observing_run(obs, target=ephem.Moon(),
+#               startstr = '2014/03/22 02:34:54',
+#               stopstr = '2014/03/22 06:55:00',
+#               fname = 'data_moon_140322.npz',
+#               log = 'log_moon_140322.txt',
+#               errlog = 'log_moon_err_140322.txt',
+#               flags = (False, True))
+
+# SUN HORIZON TO HORIZON
+observing_run(obs,
+              target = ephem.Sun(),
+              startstr = '2014/04/01 08:24:30', # Extra homing time
+              stopstr = '2014/04/01 18:02:01',
+              fname = 'data_sunrain_140401.npz',
+              log = 'log_sunrain_140401.txt',
+              errlog = 'log_sunrain_err_140401.txt',
+              flags = (True, False))
+
+
+# SEQUENCE -- VIRGO A, M17, MOON HORIZON TO HORIZON ALL
+# M17 DID NOT GO THROUGH, BEING REDONE
+obs = ay121_ephem.obs_berkeley()
+targets = [catalog.virgoA(), catalog.M17(), ephem.Moon()]
+
+# VirgoA observation starts Weds (4/2) night
+init_time_A = date_from_pdt('2014/04/02 00:00')
+# Other observations start Friday (4/4) night
+init_time_B = date_from_pdt('2014/04/04 00:00')
+
+for thing in targets:
+    if thing.name == 'Virgo A':
+        ay121_ephem.get_sky_times(obs, thing, init_time_A)
+    else:
+        ay121_ephem.get_sky_times(obs, thing, init_time_B)
+
+for thing in targets:
+    if thing.name == 'Virgo A':
+        start = '2014/04/02 20:02:00'
+        stop = '2014/04/03 05:58:00'
+        nm = 'virgoA'
+        daystr = '140402'
+        flgs = (False, False)
+    elif thing.name == 'M17':
+        start = '2014/04/04 03:11:03'
+        stop = '2014/04/04 10:08:03'
+        nm = 'M17'
+        daystr = '140404'
+        flgs = (False, False)
+    elif thing.name == 'Moon':
+        start = '2014/04/04 11:53:20'
+        stop = '2014/04/04 23:09:20'
+        nm = 'moon'
+        daystr = '140404'
+        flgs = (False, True)
+
+    # Assumes directories data/, logs/ already exist
+    filename = os.path.join('data', 'data_%s_%s.npz' % (nm, daystr))
+    logname = os.path.join('logs', 'log_%s_%s.txt' % (nm, daystr))
+    errname = os.path.join('logs', 'log_%s_err_%s.txt' % (nm, daystr))
+
+    # Execute observing run for each object, IN ORDER
+    observing_run(obs,
+                  target = thing,
+                  startstr = start,
+                  stopstr = stop,
+                  fname = filename,
+                  log = logname,
+                  errlog = errname,
+                  flags = flgs)
+
+
+# M17 REDO OBSERVATION
+obs = ay121_ephem.obs_berkeley()
+target = catalog.M17()
+
+init_time = date_from_pdt('2014/04/05 00:00')
+ay121_ephem.get_sky_times(obs, target, init_time)
+
+start = '2014/04/05 03:06:00' # Start 1 min. early
+nm = 'M17'
+stop = '2014/04/05 10:04:07'
+daystr = '140405'
+flgs = (False, True)
+

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "interf.py", line 222, in <module>
+    main()
+  File "interf.py", line 61, in main
+    flags = (False, False))
+  File "interf.py", line 92, in observing_run
+    interf_track(logger, obs, target, start, stop)
+  File "interf.py", line 121, in interf_track
+    time.sleep(30)
+KeyboardInterrupt

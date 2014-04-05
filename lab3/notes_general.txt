@@ -1,0 +1,127 @@
+A few notes on coordinate systems
+March 4, 2014
+=================================
+Galactic (won't use)
+Equatorial (RA, dec)
+    z (up) = north pole (Polaris/Vega/whatevers)
+    y = east (convention)
+    x = awkwardly radially outwards
+Topocentric (altitude, azimuth)
+    z = up from your position on Earth
+    x = east
+    y = north
+
+For convenience, use (RA, dec) (analogous to lat/lon) for equatorial coords
+
+Topocentric
+    Azimuth = start at north (y), rotate clockwise to measure
+    Altitude = go upwards
+    Nice and simple for telescope pointing
+
+Some problems
+-------------
+
+Problem: Earth spins around + rotates around sun (need an extra bit of rotation
+to make an object appear at the same place in the night sky.. er actually a
+little less).
+Described by sidereal time (86164 s -- common observatory password... [Keck?!])
+
+Problem: precession/nutation.  Coordinates given for a particular epoch.
+Then need to "precess" within current epoch -- precessing your coordinates
+
+This week
+---------
+Use catalogs of sources to figure out where to point your telescope.
+Write some rotations out manually, before letting pyephem do the hard work
+
+Rotations
+---------
+SO(3) group structure <--> SU(2)
+
+
+=============
+PyEphem usage
+=============
+
+PyEphem -- idea is to use an "observer" object, which stores date, lat, lon.
+Then we can calculate the coordinates for various objects (RA,dec; alt,az)
+
+    RA, dec are independent of observer location
+    RA measured CCW from vernal equinox position of sun
+
+======================
+Interferometer control
+======================
+
+Interferometer positioning: encoders that keep track of position
+get off by about 1/2 tick, every hour.Regularly call radiolab.pntHome()
+
+Sometimes campus network is spotty -- you may lose connection to computer in
+Wurster.
+
+radiolab.pntHome()
+    pntHome() will output a message and a 0/1 (indicates okay/bad)
+
+radiolab.pntTo(...)
+    feed in az, alt in degrees
+    don't disable software limits...
+    Don't worry about output numbers: {alt/az}_{e/w}
+        Just reflect actual telescope encoders
+        az_e in particular is quite off
+
+    Limits on alt: must be within [15, 87] degrees alt.
+    (practically speaking: maybe [17, 85] to be safe.
+    just halt observations)
+
+radiolab.recordDVM(...)
+    showPlot: keep it under ~1000 pts / 10 minutes.  Needs X11 forwarding (-X)
+    sun/moon: print RA/dec of sun,moon, will be useful for those observations
+    recordDVM will run forever, but save every pt, unless you tell it when
+    to stop
+
+
+=============
+Screen usage,
+observation logging
+===================
+
+Lets us run stuff on other computer, but also hide connection in back.
+Don't use X11 forwarding when using screen
+ssh-ing on ugastro uses '-X' by default.
+Can run (1) 'ssh' radiolab@quasar
+or, (2) ssh -x radiolab@quasar
+
+screen -list
+screen -r name_of_session
+ctrl-a d
+
+As for logging - just open and append data to a file.
+In Python: f = open(...), f.write(...), f.close()
+           sys.stdout = open(..., 'a+')
+track: pointing, re-homing.
+Useful as pointing, recording data run separately
+So errors in pointing may not be immediately obvious.
+Hence logging.
+
+Running stuff in parallel:
+import threading
+from threading import Thread
+
+Thread(target = pting_script).start()
+Thread(target = record_data_script).start()
+
+EMAIL CLASS LIST WHEN YOU INITIATE OBSERVATIONS...
+Best to do lunar observations in about a week, during full moon!
+
+=======================
+Interferometer pointing
+=======================
+
+In general, 10% is a good rule of thumb.
+With beamwidth 2 deg., we want to be within 0.2 deg (12 arcmin) of center
+Objects move through 2 deg. within 8 minutes (at most)
+Therefore repoint the beam every ~30 seconds.
+Remember to rehome every ~hour.
+
+For comparison... sun, moon have angular sizes ~ 0.5 deg.
+
