@@ -4,11 +4,56 @@ import subprocess
 import time
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
+import code
 
+def plotMeNow(x_in, y_in, x_range=100):
+    '''
+    Purpose: plotMeNow emulates the real time plotting mechanism of 
+    startchart1.pro in IDL by taking advantage of the interactive mode 
+    of pyplot in python. plotMeNow plots data from the interferometer in 
+    real time to allow for visualization of the voltage values and 
+    monitoring of the feed for issues.
 
-# Code for the Digital Front-End Control (DFEC)
-# Abandon all hope, all ye who enter!
+    Input: 
+    -x_in and y_in are the horizontal and vertical data points to be 
+    plotted. Note that x_in and y_in are the COMPLETE arrays, not the new 
+    points to be added to the plot. 
+    -xwin is an optional input that will set the number of data points in the
+    viewing window. By default, up to 100 data points will be displayed.
 
+    Output:
+    -There is no real output for this function, but a plot will be generated 
+    and maintained as data is collected.
+    
+    Updates:
+    -Written March 2014
+    '''
+
+    if len(x_in) != len(y_in):
+        print "ERROR: X and Y arrays must contain the same number of points"
+        print ""
+        print "Entering interactive mode for debugging purposes." 
+        print "All variables defined up until this point may be used in ipython"
+        print "To exit interactive mode, use Ctrl+d"
+        code.interact(local = locals())
+
+    xMinLim = (np.floor(np.max(x_in)/(x_range*1.0))-1)*x_range
+    xMaxLim = np.ceil(np.max(x_in)/(x_range*1.0))*x_range
+
+    x_out = x_in[np.where(np.logical_and(np.less(x_in,xMaxLim),np.greater(x_in,xMinLim)))]
+    y_out = y_in[np.where(np.logical_and(np.less(x_in,xMaxLim),np.greater(x_in,xMinLim)))]
+
+    plt.cla()
+    plt.ion()
+    plt.title('Measured Voltage of Source Object')
+    plt.xlabel('Time since start of obs (sec)')
+    plt.ylabel('Voltage [V]')
+    plt.plot(x_out, y_out,'-*')
+    plt.xlim([xMinLim,xMaxLim])
+    plt.draw()
+    plt.ioff()
+    
 def set_srs(srs_num,freq=None,vpp=None,dbm=None,off=None,pha=None):
     """SRS FUNCTION GENERATOR CONTROL
 
@@ -279,6 +324,27 @@ def getDVMData():
     return dvmVolt
 
 def pntHome(homeMax=5):
+    '''INTERFEROMETER ANTENNA HOMING
+
+    NAME: pntHome
+
+    PURPOSE: Reset the encoders on the antennas by pointing home.
+
+    CALLING SEQUENCE: pntHome(homeMax=5)
+        
+    OPTIONAL INPUTS:
+        homeMax (int): Number of times to try homing before quiting.
+            Default is 5.
+
+    EXAMPLE: pntHome()
+
+    NOTES: Under normal use (updating pointing every 30 or so seconds),
+        you should use the homing function every hour. In short, the
+        interferometer can run about 100 pointing commands before it
+        begins to have appreciate pointing errors (of order the
+        beamwidth of the telescope).
+    '''
+    
     sendPC('point tense alt_e=75 az_e=180 az_w=180 alt_w=75')
     homeStatus = sendPC('home alt_e az_e alt_w az_w').split()    
     homeAttempt = 1;
@@ -294,6 +360,27 @@ def pntHome(homeMax=5):
         return 0
 
 def moveTo(az=None,alt=None,alt_w=None,az_w=None,alt_e=None,az_e=None):
+    '''INTERFEROMETER ANTENNA CONTROL
+
+    NAME: moveTo
+
+    PURPOSE: Point the telescopes to particular encoder values of az/alt
+
+    CALLING SEQUENCE: pntHome(homeMax=5)
+        
+    OPTIONAL INPUTS:
+        homeMax (int): Number of times to try homing before quiting.
+            Default is 5.
+
+    EXAMPLE: pntHome()
+
+    NOTES: Under normal use (updating pointing every 30 or so seconds),
+        you should use the homing function every hour. In short, the
+        interferometer can run about 100 pointing commands before it
+        begins to have appreciate pointing errors (of order the
+        beamwidth of the telescope).
+    '''
+
     if (az is not None):
         az_w = az
         az_e = az
@@ -330,7 +417,7 @@ def pntSkyToEnc(az=None,alt=None,noEast=False,noWest=False):
     alt_w = float(alt)
     alt_e = float(alt)
 
-    if (np.less(np.mod(az_e+pointcnfg.eastAzFwrd,360.0),90) | np.greater(np.mod(az_e+pointcnfg.eastAzFwrd,360.0),270)):
+    if (np.less(np.mod(az_e+pointcnfg.eastAzFwrd,360.0),130) | np.greater(np.mod(az_e+pointcnfg.eastAzFwrd,360.0),310)):
         az_e = np.mod(az_e + 180,360)
         alt_e = 180 - alt_e
         eastAzOff = pointcnfg.eastAzRev
@@ -372,15 +459,49 @@ def pntSkyToEnc(az=None,alt=None,noEast=False,noWest=False):
     return pntDict
 
 def pntTo(alt=None,az=None,noEast=False,noWest=False,ignoreLims=False):
+    """INTERFEROMETER ANTENNA POINTING CONTROL
+
+    NAME: pntTo
+
+    PURPOSE: Move the telescopes to a specified az and alt.
+
+    CALLING SEQUENCE: pntTo(alt=None,az=None,noEast=False,noWest=False,
+        ignoreLims=False):
+        
+    OPTIONAL INPUTS:
+        alt (float): Altitude to point the antenas to (in degrees). Default is
+            not to move in alt.
+        az (float): Azimuth to point the antennas to (in degrees). Default is
+            not to move in az.
+        noEast (bool): If true, do not move the east-most telescope.
+        noWest (bool): If true, do not move the west-most telescope.
+        ignoreLims (bool): If set to true, ignore the software limits on the
+            telescope. DO NOT USE THIS IF YOU ARE NOT AN EXPERT/GSI.
+
+    EXAMPLE: pnt(alt=45,az=180)
+
+    NOTES: The telescopes will not point below 15 degrees in elevation, and
+        not above 87 degrees in elevation. If pointing in azimuth in the
+        northern hemisphere of the sky (az > 270 or az < 90), then the
+        antennas will point 'backwards', which means that pointing in the
+        northern half of the sky may be degraded.
+        
+
+    MODIFICATION HIST:
+        -- 3/11/2014 - Initial creation.
+    """
+
     if ((alt is None) | (az is None)):
         raise Exception("ERROR: Missing pointing information!")
 
     pntDict = pntSkyToEnc(alt=alt,az=az,noEast=noEast,noWest=noWest)
     if not ignoreLims:
-        if (np.greater(pntDict['alt_e'],87) | np.greater(pntDict['alt_w'],87)):
-            raise Exception("ERROR: Alt is too high!")
+        if (np.greater(pntDict['alt_e'],165) | np.greater(pntDict['alt_w'],165)):
+            raise Exception("ERROR: Alt is too low!")
         if (np.less(pntDict['alt_e'],15) | np.less(pntDict['alt_w'],15)):
             raise Exception("ERROR: Alt is too low!")
+        if (np.less(np.abs(90.0-pntDict['alt_e']),3) | np.less(np.abs(90.0-pntDict['alt_w']),3)):
+            raise Exception("ERROR: Alt is too close to zenith!")
     
     pntStatus = moveTo(alt_e=pntDict['alt_e'],alt_w=pntDict['alt_w'],az_e=pntDict['az_e'],az_w=pntDict['az_w'])
     print pntStatus
@@ -406,7 +527,49 @@ def getLST(lon=-122.254618,date=None,juldate=None):
     lst = np.mod(( theta + (lon))/15.0,24)
     return lst
 
-def recordDVM(filename='voltdata.npz',sun=False,moon=False,recordLength=np.inf,verbose=True):
+def recordDVM(filename='voltdata.npz',sun=False,moon=False,recordLength=np.inf,verbose=True,showPlot=False,plotRange=120):
+    """DIGITAL VOLT METER RECORDER
+
+    NAME: recordDVM
+
+    PURPOSE: Data recorder for the interferometer. Its MAGIC!
+
+    CALLING SEQUENCE: recordDVM(filename='voltdata.npz',sun=False,moon=False,
+        recordLength=np.inf,verbose=True,showPlot=False,plotRange=120)
+        
+    OPTIONAL INPUTS:
+        fileName (string): Data file to record (in npz format). Data is saved
+            as a dictionary with 5 items -- 'ra' records RA of the source
+            in decimal hours, 'dec' records Dec in decimal degrees, 'lst'
+            records the LST at the time that the voltage was measured, 'jd'
+            records the JD at which the voltage was measured, and 'volts'
+            records the measured voltage in units of Volts. Default is a file
+            called 'voltdata.npz'.
+        sun (bool): If set to true, will record the Sun's RA and Dec to the
+            file. Default is not to record RA or Dec.
+        moon (bool): If set to true, will record the Moon's RA and Dec to the
+            file. Default is not to record RA or Dec.
+        recordLength(float): Length to run the observations for, in seconds.
+            Default will cause recordDVM to run until interrupted by Ctrl+C or
+            terminal kill.
+        verbose (bool): If true, will print out information about each voltage
+            measurement as it is taken.
+        showPlot (bool): If true, will show a live plot of the data being
+            recorded to disk (requires X11 to be on).
+        plotRange (float): Range in time (in seconds) to show data over.
+            Default will show the data taken over the last 1-2 minutes.
+
+    EXAMPLE: recordDVM(filename='myfolder/mydata.npz',showPlot=True)
+
+    NOTES: The .npz file is saved with each new datapoint, which means that
+        you can for the observation to stop at any point by using Ctrl+C (or
+        if the observation is interrupted because of network issues, the
+        data will still be saved to disk).
+
+    MODIFICATION HIST:
+        -- 3/11/2014 - Initial creation.
+    """
+
     ra = 0
     dec = 0
     raArr = np.ndarray(0)
@@ -427,11 +590,13 @@ def recordDVM(filename='voltdata.npz',sun=False,moon=False,recordLength=np.inf,v
         currLST = getLST()
         currJulDay = getJulDay()
         raArr = np.append(raArr,ra)
-        decArr = np.append(decArr,ra)
+        decArr = np.append(decArr,dec)
         voltArr = np.append(voltArr,currVolt)
         lstArr = np.append(lstArr,currLST)
         jdArr = np.append(jdArr,currJulDay)
 
+        if showPlot:
+            plotMeNow((jdArr-jdArr[0])*86400,voltArr,x_range=plotRange/2.0)
         if verbose:
             print 'Measuring voltage: ' + str(currVolt) + ' (LST: ' + str(currLST) +'  ' + time.asctime() + ')'
         

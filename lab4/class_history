@@ -1,0 +1,43 @@
+import dish
+cd ugradio/ugradio_code/
+import dish
+dish?
+dish??
+d = dish.Dish()
+d.point?
+d.point(-5,0)
+d.point?
+d.point(65,240)
+d.point(65,150)
+d.home()
+d.noise_off()
+import dish_synth
+s = dish_synth.Synth()
+s.set_freq(1390)
+s.set_amp(0)
+import takespec
+takespec.takeSpec?
+takespec.takeSpec('firsttry', numSpec=32)
+history
+
+import dish
+cd ugradio/ugradio_code/
+import dish
+dish?
+dish??
+d = dish.Dish()
+d.point?
+d.point(-5,0)
+d.point?
+d.point(65,240)
+d.point(65,150)
+d.home()
+d.noise_off()
+import dish_synth
+s = dish_synth.Synth()
+s.set_freq(1390)
+s.set_amp(0)
+import takespec
+takespec.takeSpec?
+takespec.takeSpec('firsttry', numSpec=32)
+history

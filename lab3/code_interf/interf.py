@@ -27,54 +27,37 @@ def main():
     2. point telescope every 30 seconds
     3. point home every 300 minutes
     """
+
     obs = ay121_ephem.obs_berkeley()
-    targets = [catalog.virgoA(), catalog.M17(), ephem.Moon()]
+    thing = ephem.Moon()
 
-    # VirgoA observation starts Weds (4/2) night
-    init_time_A = date_from_pdt('2014/04/02 00:00')
-    # Other observations start Friday (4/4) night
-    init_time_B = date_from_pdt('2014/04/04 00:00')
+    # Just for prettyprint output
+    init_time = date_from_pdt('2014/04/14 15:00')
+    ay121_ephem.get_sky_times(obs, thing, init_time)
 
-    for thing in targets:
-        if thing.name == 'Virgo A':
-            ay121_ephem.get_sky_times(obs, thing, init_time_A)
-        else:
-            ay121_ephem.get_sky_times(obs, thing, init_time_B)
+    # Times in PDT
+    start = '2014/04/14 21:08:05' # Start 1 min. early
+    stop = '2014/04/15 05:06:05'
+    # Strings for file IDs
+    daystr = '140414'
+    nm = 'moon_eclipse'
+    # Flags for observation logging of ra/dec
+    flgs = (False, True)
 
-    for thing in targets:
-        if thing.name == 'Virgo A':
-            start = '2014/04/02 20:02:00'
-            stop = '2014/04/03 05:58:00'
-            nm = 'virgoA'
-            daystr = '140402'
-            flgs = (False, False)
-        elif thing.name == 'M17':
-            start = '2014/04/04 03:11:03'
-            stop = '2014/04/04 10:08:03'
-            nm = 'M17'
-            daystr = '140404'
-            flgs = (False, False)
-        elif thing.name == 'Moon':
-            start = '2014/04/04 11:53:20'
-            stop = '2014/04/04 23:09:20'
-            nm = 'moon'
-            daystr = '140404'
-            flgs = (False, True)
+    # Assumes directories data/, logs/ already exist
+    filename = os.path.join('data', 'data_%s_%s.npz' % (nm, daystr))
+    logname = os.path.join('logs', 'log_%s_%s.txt' % (nm, daystr))
+    errname = os.path.join('logs', 'log_%s_err_%s.txt' % (nm, daystr))
 
-        # Assumes directories data/, logs/ already exist
-        filename = os.path.join('data', 'data_%s_%s.npz' % (nm, daystr))
-        logname = os.path.join('logs', 'log_%s_%s.txt' % (nm, daystr))
-        errname = os.path.join('logs', 'log_%s_err_%s.txt' % (nm, daystr))
-
-        # Execute observing run for each object, IN ORDER
-        observing_run(obs,
-                      target = thing,
-                      startstr = start,
-                      stopstr = stop,
-                      fname = filename,
-                      log = logname,
-                      errlog = errname,
-                      flags = flgs)
+    # Execute observing run for each object, IN ORDER
+    observing_run(obs,
+                  target = thing,
+                  startstr = start,
+                  stopstr = stop,
+                  fname = filename,
+                  log = logname,
+                  errlog = errname,
+                  flags = flgs)
 
 
 def observing_run(obs, target, startstr, stopstr, fname, log, errlog, flags):

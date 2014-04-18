@@ -10,8 +10,7 @@ astrobaki/index.php/Undergraduate\_Radio\_Lab)
 About this repository
 ---------------------
 
-Scripts, data, lab reports for class
-Also, notes / practice using Git and Github
+Notes, data, scripts, lab reports for class
 
 Refer to [github.com/AaronParsons/ugradio](github.com/AaronParsons/ugradio)
-for various class files
+for relevant class files

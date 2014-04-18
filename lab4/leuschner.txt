@@ -1,0 +1,100 @@
+Notes on Leuschner pointing
+(April 15, 2014)
+---------------------------
+http://ugastro.berkeley.edu/radio/leuschner/index.html
+    See data taking notes
+
+Connect to heiles
+    ssh -XY -p 31 radiolab@leuschner.berkeley.edu
+    -XY for X11 forwarding
+    Same password as for radiolab@quasar (see lab board)
+
+Interact with dish
+    cd ugradio/ugradio_code  # Will be set up for global access
+    import dish
+    d = dish.Dish()
+    d = dish.Dish(verbose)  # Spits out lotsa things
+
+    d.point -- if validate=True, it won't point, just tell you if it works or
+    doesn't work.
+        (consider checking for a ValueError...)
+        point only returns control, once done pointing
+        az, alt must be in degrees
+
+    d.home() -- returns it to point it straight up, resets encoders
+
+    d.noise_on(), d.noise_off() -- turns on/off a "noise diode"
+    Use noise diode for a Y-factor measurement.  Want to measure brightness
+    temperature -- essentially a calibration.
+    We will want to do noise calibrations every ~10 minutes or so, depending
+    on observing strategy.
+
+    Scripts: start by re-homing, and turning off noise diode.
+
+Set LO frequency
+    import dish_synth
+    s = dish_synth.Synth()  # Interface to the synthesizer
+    s.set_freq(1420)  # Value in MHz...
+    
+    Maybe choose to get only positive frequencies.  What's the bandwidth of our
+    spectrometer?
+
+    We run signal in, mix with LO, run through sampler @ 24 MHz.
+    So we get 12 MHz bandwidth (looking at positive frequencies only).
+    Line centered at 1420 MHz...  set LO lower, to get pos. freqs.
+    Set it two bandwidths below, to take advantage of aliasing to get spectrum.
+
+    set LO to 1390 MHz... (?!)
+
+Take data
+    import takespec
+    takespec.takeSpec()
+
+    Don't use default # of spectra, that takes like 1/3rd second/spectrum.
+    Our example: 32 spectra <-> 1 MB data.
+    Data in binary format.
+
+Read data (do on own computer)
+   import readspec_mod
+   d = readspec_mod.readSpec('firsttry0.log')
+   We get 8192 * (number of spectra) numbers, covering
+   the bandwidth of our spectrum (1414-1426 MHz)
+
+   Data are SPIKY -- due to radio interference!
+   Little bump on the data -- that's our galaxy flipping us the finger.
+
+CHECK EVERYTHING
+    Maximal number of things that could go wrong...
+    make sure it does what you expect...
+
+
+
+Division of labor...
+--------------------
+Divide and conquer for data acquisition and reduction
+Telescope control
+    Homing, pointing, coordinate conversion
+    Data collection, frequency control, noise control.
+Scientific goals
+    Where to point, what frequencies to look at
+    Raw data --> science data, spectra clean-up / RFI removal, etc
+
+Noise management -- main curve is intrinsic to telescope/electronics
+Can move the HI signal around, by changing frequency band we're looking at
+Keep signal in right place in band???
+
+One person download at a time.
+Collecting ~ 1000 spectra at a time.
+10 hours observations --> 3 hours download!!!
+Internet management -- how to make it robust when things are falling apart
+Lots of connection failures...
+You should be using screen to run your observations, so observations won't be
+killed if internet fails.
+Plot sparingly on Heiles... very little bandwidth
+
+Leuschner -- bandwidth is 4 deg., do 2 deg. spacings?
+
+Telescope best tuned to 1270?! (uhhhh not catching quite everything)
+1570 is at your own risk
+
+Remember what you've already observed...
