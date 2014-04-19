@@ -194,7 +194,7 @@ We measure $10.7 \unit{GHz}$ (X-band) emission using a two-element multiplying i
 The interferometer consists of two antennae (diameter $d \sim 1 \unit{m}$) with east-west baseline $B \approx 10 \unit{m}$ on the rooftop of Wurster Hall, Univ. California Berkeley ($37\degree 52' 12.7'' \unit{N}$, $-122\degree 15' 15.8'' \unit{E}$).
 The interferometer beam size is $\lambda/d \sim 1.6\degree$ and angular resolution is $\lambda / B \sim 0.16\degree$.
 The stated bandwidth is $10 \unit{MHz}$, though we do not know the antenna response or the frequency band uncertainty of our interferometer dishes.
-We conservatively estimate the absolute frequency error to be $\sim 0.1 \unit{GHz}$.
+We conservatively estimate the absolute frequency error to be $\sim 100 \unit{MHz}$ at worst.
 
 The interferometer may point from $15\degree$ to $87\degree$ in altitude, and its northern field of view is obstructed by a taller portion of Wurster Hall.
 We estimate that Wurster Hall obstructs the sky between $-20\degree$ and $10\degree$ azimuth and up to $40\degree$ altitude.
@@ -250,13 +250,11 @@ All observations are single horizon-to-horizon runs except our observation of th
 % --------------
 \subsection{Data reduction}
 
-As previously mentioned, dish homing takes $\sim1 \unit{minute}$ and introduces spurious voltage spikes as data collection continues during homing and subsequent re-pointing.  We extract homing start and stop times from automatically generated observing logs and remove all data associated with homing and re-pointing (Figure~\ref{fig:reduction}a).  The interferometer output also carries a fluctuating DC offset ($\Delta V \sim \pm 1 \unit{mV}$) comparable to measured voltages for all sources except the sun; we are unable to explain the cause of this variable offset.  We extract the DC offset signal with a $240 \unit{second}$ wide boxcar filter and subtract the offset from the interferometer output.  Figure~\ref{fig:reduction} plots raw and reduced data for the 2014 April 4 moon observation.
+Dish homing takes $\sim1 \unit{minute}$ and introduces spurious voltage spikes as data collection continues during homing and subsequent re-pointing.  We extract homing start and stop times from automatically generated observing logs and remove all data associated with homing and re-pointing (Figure~\ref{fig:reduction}a).  The interferometer output also carries a fluctuating DC offset ($\Delta V \sim \pm 1 \unit{mV}$) comparable to measured voltages for all sources except the sun; we are unable to explain the cause of this variable offset.  We extract the DC offset signal with a $240 \unit{second}$ wide boxcar filter and subtract the offset from the interferometer output.  Figure~\ref{fig:reduction} plots raw and reduced data for the 2014 April 4 moon observation.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics{plots/moon_raw.pdf} \\
-    \includegraphics{plots/moon_clean.pdf} \\
-    \includegraphics{plots/moon_fft.pdf} \\
+    \includegraphics{plots/moon_cleaning.pdf} \\
     \caption{(top) Raw interferometer output from 2014 April 4 Moon observation; overlaid vertical lines identify homing spikes and gaps in data collection. (middle) Interferometer output with fluctuating DC offset and homing spikes removed.  Data reduction allows fringe modulation to be recovered and extracted.  (bottom) Partial power spectrum of reduced interferometer data.}
     \label{fig:reduction}
 \end{figure}
@@ -273,46 +271,83 @@ We compute power spectra as a function of frequency from cleaned data using the 
 % ---------------------
 \subsection{Interferometer point source response}
 
-The interferometer outputs the product of two voltage signals.  For a point source, the response in time varies as
+The interferometer outputs the product of two voltage signals.  For a point source, the interferometer response is proportional to:
 \begin{align*}
 	F(t) &= \cos(2\pi\nu t) \cos\left(2\pi\nu \left[ t + \tau \right] \right) \\
 		 &\approx \cos\left(2\pi\nu \tau\right)
 \end{align*}
-where $\tau = (B_y / c) \cos\delta \sin(h_s) + \tau_c$ considers both geometric and cable delay and we have dropped the sum term which oscillates at $22 \unit{GHz}$.
-Then:
-\[
+where the time delay $\tau = (B_y / c) \cos\delta \sin(h_s) + \tau_c$ sums geometric and cable delay and we have dropped a rapidly varying $22 \unit{GHz}$ sum term.
+Splitting $\tau$ into cable and geometric delays gives:
+\begin{equation} \label{eq:ptfringe}
 	F(t) = \cos(2\pi\nu\tau_c)
 			\cos \left[2\pi \left(\frac{B_y}{\lambda}\cos\delta\right)
 			           \sin h_s \right]
 			- \sin(2\pi\nu\tau_c)
 			\sin \left[2\pi \left(\frac{B_y}{\lambda}\cos\delta\right)
 			           \sin h_s \right]
-\]
+\end{equation}
+As $\tau_c$ is a constant, the interferometer output is a sinusoid with variable frequency, determined by $\sin(h_s)$.
 
 % ----------------------
 % Dec / baseline fitting
 % ----------------------
 \subsection{Declination measurement from fringe frequencies}
 
-The fringe frequency for a point source encodes information about the interferometer and source position in the sky.
-
-Brute force least-squares implementation and results.
-
-Frequency/wavelength? Probably 5 to 10 percent error (10.5 to 11.5 GHz).
-
-Error in dec/baseline?
+We may infer either of interferometer baseline or source declination by non-linear least squares fitting our interferometer data to equation~\ref{eq:ptfringe}.  Our non-linear fit involves three free parameters: $A \equiv \cos(2\pi\nu\tau_c)$, $B \equiv \sin(2\pi\nu\tau_c)$, and $k \equiv 2\pi \frac{B_y}{\lambda}\cos\delta$.  We compute $x \equiv \sin h_s$ from the times and hence hour angles of all observations.  The fit equation becomes:
+\[
+    F(t) = A \cos(k x) + B \sin(k x)
+\]
+If a value of $k$ is given, $A$ and $B$ are readily fit by linear least squares.  We brute force the non-linear least squares fit in $k$ as follows.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics{plots_fitting/orion_dec_fits_lsq.pdf} \\
-    \caption{Shitty caption}
+    \includegraphics{plots_fitting/M17_dec_fits_lsq_logk.pdf}
+    \includegraphics{plots_fitting/M17_dec_fits_lsq.pdf}
+    \caption{Scaled sum of squared residuals from linear fits for $A,B$ as a function of $k = 2\pi \left(B_y/\lambda\right) \cos\delta$, fitting fringe data from NGC 6618 (M17); (left) a large range of possible $k$ values with logarithmic sampling; (right) a smaller range of $k$ values shows nearby minima.  Red circles plot iteratively computed best-fit $k$.  Note that ordinate ($y$) axes differ between the two plots.}
+    \label{fig:declsq}
 \end{figure}
 
-Cable delay is order of 30-40 picoseconds, or about $1 \unit{cm}$.
-Note that the maximum measurable cable delay, assuming 11 GHz,
-is $91 \unit{ps}$
+% Goddammit this is horribly explained
+We seek a value of $k$ that minimizes the sum of squared residuals, computed from a linear fit to $A,B$.  Start with an initial guess $k_i = 2000$ and search domain $k\in[1000, 3000]$ centered on $k_i$.  Sample $1000$ evenly spaced $k$ values in this range and use each value to compute a linear least squares fit for $A,B$.  Take the sampled $k$ value with minimum sum of squared residuals as our next guess for $k$ and halve the search domain.  Iterate this procedure of guessing $k$ and refining the search domain until two consecutive guesses for $k$ differ by less than $0.0002$ (i.e., fractional change $\sim 10^{-7}$ for $k \approx 2000$).  Our procedure converges to a value of $k$ within or near the initial search domain (Figure~\ref{fig:declsq}), although it is not guaranteed to converge to an absolute minimum within or near the search domain.  Qualitatively, our procedure appears robust to variations in sampling and search domain.
 
-Declination -- assume $f = 10.7 \pm 0.1 \unit{GHz}$, $B = 10 \pm 0.1 \unit{m}$.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics{plots_fitting/M17_dec_fits_signal.pdf}
+    \caption{Red line plots equation~\ref{eq:ptfringe} with best fit values for $k,A,B$ from non-linear least squares fitting procedure; blue circles plot interferometer data from NGC6618 (M17), corresponding to fit $k$ from Figure~\ref{fig:declsq}.}
+    \label{fig:decsig}
+\end{figure}
+
+Our fits are only marginally better than a straight line fit and cannot explain most sample variance (Figure~\ref{fig:decsig}).  However, Figure~\ref{fig:declsq} illustrates that a meaningful signal is present and can be robustly detected by our non-linear fitting procedure.
+
+With a value for $k$ in hand, we assume baseline $B = 10 \unit{m}$ and estimate the fit declination $\delta$.  We also perform the reverse procedure by calculating source declinations (epoch J2000, precessed to 2014 April 7 using PyEphem) and then estimate the fit baseline.  We estimate the cable delay by computing $2\pi\nu\tau_c = \arctan(-B/A)$ (equation~\ref{eq:ptfringe}); however, the largest measurable cable delay is $\pm 47 \unit{ps}$ as we can only measure signal phase offset.  Table~\ref{tab:dec} summarizes our best fit parameters.
+
+We estimate uncertainties in our fit values by taking $\nu = 10.7 \pm 0.1 \unit{GHz}$ and $B = 10 \pm 0.1 \unit{m}$.  We are unable to quantify uncertainty for our fitted value of $k$, although this is the most important possible source of systematic error.  Interestingly, we expect a more precise measurement of $\delta$ with larger declination (farther from $\delta=0$).  Why?  The function $\cos\delta$ is relatively insensitive to changes in $\delta$ near $\delta=0$, hence uncertainty in $\cos\delta$ is propagated into a larger uncertainty in $\delta$.
+
+
+\begin{table}[!ht]
+\centering
+\caption{Parameter estimates from brute force least squares.}
+\label{tab:dec}
+\begin{tabular}{@{}rrrrr@{}}
+    \toprule
+    Object & Fit $k$ (-)
+        & Fit, actual $\delta$ ($\degree$)
+        & Fit $B$ (m) & Fit $\tau_c$ (ps) \\
+    \midrule
+    NGC 1976 (Orion) & $2227.45$
+        & $-6.7\degree \pm 7\degree$, $-5.34\degree$
+        & $9.98 \pm 0.1$ & $-27$ \\
+    NGC 4486 (Virgo A) & $2077.17$
+        & $22.1\degree \pm 2\degree$, $12.31\degree$
+        & $9.48 \pm 0.1$ & $42$ \\
+    NGC 6618 (M17) & $2142.41$
+        & $-17.2\degree \pm 3\degree$, $-16.2\degree$
+        & $9.95 \pm 0.1$ & $34$ \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+The calculated declinations for NGC 1976 (Orion) and NGC 6618 (M17) are accurate to about $1\degree$ on the sky, whereas our estimate of declination for NGC 4486 is off by $10\degree$.  Similarly, the calculated baselines for Orion and M17 agree with expectation to within $0.1 \unit{m}$.  We attribute the poor parameter fits for Virgo A to comparatively weak signal strength; the flux density of Virgo A at $10.7 \unit{GHz}$ is an order of magnitude weaker than flux densities for Orion and M17.
 
 % ----------------
 % Diameter fitting
@@ -337,6 +372,13 @@ The modulation function depends on the angular diameter of the source.  Consider
                 &\propto \frac{1}{2\pi f_f R} J_1 \left(2\pi f_f R \right)
 \end{align*}
 where $J_1(z)$ is a Bessel function of the first kind [\textit{Abramowitz and Stegun}, 1964].
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=1]{plots_fitting/sun_fringes_envelopes.pdf} \\
+    \caption{Shitty caption}
+	\label{fig:sunFringes}
+\end{figure}
 
 \begin{figure}[!ht]
     \centering
