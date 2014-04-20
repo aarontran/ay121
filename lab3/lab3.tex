@@ -278,7 +278,17 @@ Splitting $\tau$ into cable and geometric delays gives:
 			\sin \left[2\pi \left(\frac{B_y}{\lambda}\cos\delta\right)
 			           \sin h_s \right]
 \end{equation}
-As $\tau_c$ is a constant, the interferometer output is a sinusoid with variable frequency, determined by $\sin(h_s)$.
+As $\tau_c$ is a constant, the interferometer output is a sinusoid with time-dependent frequency determined by $\sin(h_s)$.  This is the \emph{fringe frequency} $f_f$, which we calculate by Taylor expanding the sin/cos argument in hour angle:
+\[
+    2\pi \frac{B_y}{\lambda}\cos\delta \sin (h_s + \Delta h)
+    = 2\pi \frac{B_y}{\lambda}\cos\delta \left[
+        \sin (h_s) + \cos (h_s) \Delta h + O\left((\Delta h)^2\right)
+      \right]
+\]
+The $\Delta h$ term captures time dependence, while the first term is simply a phase argument.  The local fringe frequency is then:
+\[
+    f_f = 2\pi \frac{B_y}{\lambda} \cos\delta \cos\left(h_s\right)
+\]
 
 % ----------------------
 % Dec / baseline fitting
@@ -336,7 +346,7 @@ We estimate uncertainties in our fit values by taking $\nu = 10.7 \pm 0.1 \unit{
 \end{tabular}
 \end{table}
 
-The calculated declinations for NGC 1976 (Orion) and NGC 6618 (M17) are accurate to about $1\degree$ on the sky, whereas our estimate of declination for NGC 4486 is off by $10\degree$.  Similarly, the calculated baselines for Orion and M17 agree with expectation to within $0.1 \unit{m}$.  We attribute the poor parameter fits for Virgo A to comparatively weak signal strength; the flux density of Virgo A at $10.7 \unit{GHz}$ is an order of magnitude weaker than flux densities for Orion and M17.
+The calculated declinations for NGC 1976 (Orion) and NGC 6618 (M17) are accurate to about $1\degree$ on the sky, whereas our estimate of declination for NGC 4486 is off by $10\degree$.  Similarly, the calculated baselines for Orion and M17 agree with expectation to within $0.1 \unit{m}$.  We attribute the poor parameter fits for Virgo A to comparatively weak signal strength; the flux density of Virgo A at $10.7 \unit{GHz}$ is an order of magnitude weaker than flux densities for Orion and M17.  The various estimates of cable delay disagree, as expected.  As the cable delay fit is determined by hour angle phase in equation~\ref{eq:ptfringe}, inconsistent right ascensions may cause our cable delay estimates to differ.  However, we suggest that uncertainty in our fitting procedure greatly outweighs error from inaccurate right ascensions -- i.e., cable delay estimates are not physically meaningful unless we can quantify the robustness (uncertainty) of our non-linear fits.
 
 % ----------------------
 % Extended source theory
@@ -403,7 +413,7 @@ We first construct an envelope curve by extracting peak points of the underlying
 
 We assume that modulation function minima correspond to zero crossings of $J_1(z)$, where $z = 2\pi f_f R$.  From various tabulations, $J_1(z)$ has zeros $z_0 = 3.8317$, $z_1 = 7.0156$, $z_2 = 10.1735$, $\ldots$.  Candidate source radii are then $R_i = z_i / (2\pi f_f)$, $i \in \ints^+$.  How do we select or identify the best radius?  Each candidate radius requires a certain shape (and some number of minima) for the modulation function.  For the sun, we expect to see two sets of minima (reflected across zero hour angle) in the correct modulation function; for the moon, we expect only one set.  This is a bit of a charade, so let's be honest.  We're trying to make the shoe fit our misshapen feet (Figure~\ref{fig:sunMFfits}) -- i.e., eyeballing and seeing which shape best fits our data.
 
-We suggest that the outside minima for the sun correspond to the 2nd zero of $J_1$; the inside minima correspond to the 3rd zero of $J_1$ (Figure~\ref{fig:sunMFfits}).  We did not fit minima at lower fringe frequencies (larger hour angle), as the signal was increasingly inconsistent and did not increase in amplitude as expected.  The average of four values of Sun radius (from four minima) is $R_{\mt{sun}} = 0.29\degree$.
+We suggest that the outside minima for the sun correspond to the 2nd zero of $J_1$; the inside minima correspond to the 3rd zero of $J_1$ (Figure~\ref{fig:sunMFfits}).  We did not fit minima at lower fringe frequencies (larger hour angle), as the signal was increasingly inconsistent and did not increase in amplitude as expected.  The average of four values of Sun radius (from four minima) is $R_{\mt{sun}} = 0.29\degree$.  We are unable to determine uncertainty, but we note that the candidate radii differ by $\sim0.1\degree$; if our eyeballing procedure is justified, $0.1\degree$ should be a conservative bound on our error.
 
 \begin{figure}[!ht]
     \centering
