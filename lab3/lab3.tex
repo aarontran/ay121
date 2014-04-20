@@ -66,7 +66,7 @@ ${}^3$Dept. Earth and Planetary Science, UC Berkeley, 335 McCone Hall, Berkeley,
 ${}^4$Dept. Physics, UC Berkeley, 251 LeConte Hall, Berkeley, CA 94720, USA \\
 ${}^5$Radio Astronomy Laboratory, UC Berkeley, Berkeley, CA 94720, USA \\
 ${}^6$Undergraduate Radio Laboratory teaching staff \\
-\textit{Not received 2014 April 7; submitted 2014 April ??; damnatio memoriae 2014 April ??}
+\textit{Not received 2014 April 7; submitted 2014 April 20; damnatio memoriae 2014 April 20}
 \end{center}
 
 % ========
@@ -74,7 +74,7 @@ ${}^6$Undergraduate Radio Laboratory teaching staff \\
 % ========
 \section*{Abstract}
 
-We measure sun and moon angular diameters of $\sim 0.5$--$0.7\degree$ by matching zero crossings in expected modulation functions with fringe envelope curve minima.
+We estimate source declinations and angular diameters from $10.7 \unit{GHz}$ interferometer fringe frequencies and modulation.  Declinations fitted from strong radio source fringes (Orion, M17) are accurate to $\sim1\degree$.  We estimate Sun, Moon angular diameters of $\sim0.3$--$0.6\degree$ by matching zero crossings in expected modulation functions with fringe envelope minima.  Envelope fits are limited by noise and poor low-altitude signal and are hence less robust than fringe frequency fits.
 
 \textit{Keywords}: astrometry --- instrumentation: interferometers --- galaxies: individual (NGC 4486) --- ISM: individual (NGC 1976, NGC 6618)
 
@@ -83,17 +83,9 @@ We measure sun and moon angular diameters of $\sim 0.5$--$0.7\degree$ by matchin
 % ============
 \section{Introduction}
 
-Motivation -- measure source declinations and sun moon angular diameters
-Pedagogical -- understand interferometry
-Least squares fitting to back out meaningful astronomical numbers
+Radio interferometers can achieve large beamwidth and fine angular resolution by careful array design, enabling study of molecular transitions in star forming regions, various sources of radio continuum emission, the $21 \unit{cm}$ line, and much more.  The budding radio astronomer had better start with a nice two element array, if he or she is to ever have hope of understanding larger arrays.  Here we present point and extended source observations from a 2 element interferometer with baseline $B=10\unit{m}$ operating at $10.7\unit{GHz}$.  The compete procedure of data acquisition, processing, and model fitting provides a template for understanding 1-D interferometer observation.  The same principles operate for more sophisticated 2-D arrays and even very long baseline interferometry.
 
-Roadmap:
-rotation matrices for calculation and ephemerides
-Interferometer design
-Interferometer signal (averaging, frequency components)
-Least squares fitting dec/baseline
-Leasts squares fitting diameter
-Conclusion
+We introduce astronomical coordinates (space and time) at an elementary level, so that we may calculate object ephemerides and perform telescope tracking.  Data reduction recovers the interferometer fringes and fringe modulation.  We perform non-linear least squares fitting to determine fringe frequencies and minima in fringe modulation.  From these procedures we may estimate source declinations, interferometer baseline, and/or source angular extents.  Fringe amplitudes may also enable estimation of source strength, but for all sources but Sun and Moon the fringe sinusoid is covered by noise.
 
 % =================
 % Rotation matrices
@@ -112,7 +104,7 @@ A sidereal day is slightly shorter than a solar day due to the Earth's orbital m
 \emph{Local sidereal time} (LST) is sidereal time adapted for a specific location (longitude) on Earth, and is defined by the vernal equinox's hour angle (HA).
 
 Astronomical positions are specified by location-agnostic spherical coordinates, typically \emph{right ascension} (RA, $\alpha$) and \emph{declination} (dec, $\delta)$.
-To perform observations, we convert $(\alpha, \delta)$ into more useful coordinates for given geographic latitude and longitude -- namely, \emph{altitude} and \emph{azimuth} (alt, az).
+To perform observations, we convert $(\alpha, \delta)$ into more useful coordinates for given geographic latitude and longitude -- namely, \emph{altitude} and \emph{azimuth} (alt, az).  \emph{Hour angle} $h_s$ will also be useful.
 Our presentation of the requisite coordinate transformation follows that of Carl Heiles.
 
 Let $(x,y,z)$ specify a right-handed coordinate system where the polar angle is measured relative to the $z$-axis and the azimuth is measured in the $x$-$y$ plane starting from the positive $x$-axis.
@@ -127,14 +119,14 @@ A unit vector in $(\alpha, \delta)$ coordinates may be written in Cartesian coor
 \[
 	(x, y, z) = (\cos\alpha\cos\delta, \sin\alpha\cos\delta, \sin\delta)
 \]
-We select a longitude by converting right ascension ($\alpha$) to hour angle (HA):
+We select a longitude by converting right ascension ($\alpha$) to hour angle ($h_s$):
 \[
-	\mathrm{HA} = \mathrm{LST} - \alpha
+	h_s = \mathrm{LST} - \alpha
 \]
 This transformation is a rotation about the $z$-axis and a reflection across the $x$-$z$ plane; (HA, $\delta$) coordinates have reversed handedness compared to $(\alpha, \delta)$ and the rotated $x$-axis is perpendicular to the meridian at which we evaluate LST, HA.
 The new coordinate basis has Cartesian representation:
 \[
-	(x', y', z') = (\cos(\mathrm{HA})\cos\delta, \sin(\mathrm{HA})\cos\delta, \sin\delta)
+	(x', y', z') = (\cos(h_s)\cos\delta, \sin(h_s)\cos\delta, \sin\delta)
 \]
 Two more rotations convert (HA, $\delta$) to (alt, az).
 We rotate the $x'$-$z'$ plane by $(\phi - \pi /2)$, where $\phi$ is geographic latitude, then rotate the transformed $x'$-$y'$ plane by $\pi$ radians.
@@ -166,14 +158,14 @@ The final coordinate basis has the same handedness as (HA, $\delta$) coordinates
 Altitude is measured upwards from the $x''$-$y''$ plane (i.e., the Earth's local tangent plane) and azimuth is measured clockwise from geographic north.
 
 For arbitrary $(\alpha, \delta)$, the topocentric Cartesian coordinates are:
-\begin{equation}
+\[
 	\hat{s} =
 	\begin{pmatrix}
-		-\cos(\mathrm{HA}) \sin\phi \cos\delta + \cos\phi \sin\delta \\
-		-\sin(\mathrm{HA}) \cos\delta \\
-		 \cos(\mathrm{HA}) \cos\phi \cos\delta + \sin\phi \sin\delta
+		-\cos(h_s) \sin\phi \cos\delta + \cos\phi \sin\delta \\
+		-\sin(h_s) \cos\delta \\
+		 \cos(h_s) \cos\phi \cos\delta + \sin\phi \sin\delta
 	\end{pmatrix}
-\end{equation}
+\]
 
 These coordinate transformations correctly predict astronomical positions for both stationary celestial objects and Solar System objects.
 Our rotation matrices agree with PyEphem calculations to $\sim 10 \unit{arcseconds}$; note that PyEphem's atmospheric refraction correction must be disabled.
@@ -255,11 +247,11 @@ Dish homing takes $\sim1 \unit{minute}$ and introduces spurious voltage spikes a
 \begin{figure}[!ht]
     \centering
     \includegraphics{plots/moon_cleaning.pdf} \\
-    \caption{(top) Raw interferometer output from 2014 April 4 Moon observation; overlaid vertical lines identify homing spikes and gaps in data collection. (middle) Interferometer output with fluctuating DC offset and homing spikes removed.  Data reduction allows fringe modulation to be recovered and extracted.  (bottom) Partial power spectrum of reduced interferometer data.}
+    \caption{(top) Raw interferometer output from 2014 April 4 Moon observation; overlaid vertical lines identify homing spikes and gaps in data collection.  Red curve plots boxcar-smoothed signal to be subtracted. (middle) Interferometer output with fluctuating offset and homing spikes removed.  Data reduction allows fringe modulation to be recovered and extracted.  (bottom) Partial power spectrum of reduced interferometer data.}
     \label{fig:reduction}
 \end{figure}
 
-We compute power spectra as a function of frequency from cleaned data using the discrete Fourier transform.  For moon and sun observations, we observe a gradually increasing signal from $0.015$--$0.027 \unit{Hz}$ consistent with the range of expected fringe frequencies; in point source data, a weak and possibly spurious peak may be discerned near $0.027 \unit{Hz}$.  We assume the sampling period is $1 \unit{second}$ despite gaps in data sampling, introducing some error.  Although we do not account for uneven sampling here, we refer the interested reader to work by \textit{Dutt and Rokhlin} [1993] and \textit{Ferraz-Mello} [1981].
+We compute power spectra as a function of frequency from cleaned data using the discrete Fourier transform.  For moon and sun observations, we observe a gradually increasing signal from $0.015$--$0.027 \unit{Hz}$ consistent with the range of expected fringe frequencies; in point source data, a weak and possibly spurious peak may be discerned near $0.027 \unit{Hz}$.  We assume the sampling period is $1 \unit{second}$ despite gaps in data sampling, introducing some error.  Although we do not account for uneven sampling here, the interested reader may refer to work by \textit{Dutt and Rokhlin} [1993] and \textit{Ferraz-Mello} [1981].
 
 % =======
 % Results
@@ -317,12 +309,9 @@ We seek a value of $k$ that minimizes the sum of squared residuals, computed fro
     \label{fig:decsig}
 \end{figure}
 
-Our fits are only marginally better than a straight line fit and cannot explain most sample variance (Figure~\ref{fig:decsig}).  However, Figure~\ref{fig:declsq} illustrates that a meaningful signal is present and can be robustly detected by our non-linear fitting procedure.
-
-With a value for $k$ in hand, we assume baseline $B = 10 \unit{m}$ and estimate the fit declination $\delta$.  We also perform the reverse procedure by calculating source declinations (epoch J2000, precessed to 2014 April 7 using PyEphem) and then estimate the fit baseline.  We estimate the cable delay by computing $2\pi\nu\tau_c = \arctan(-B/A)$ (equation~\ref{eq:ptfringe}); however, the largest measurable cable delay is $\pm 47 \unit{ps}$ as we can only measure signal phase offset.  Table~\ref{tab:dec} summarizes our best fit parameters.
+Our fits are only marginally better than a straight line fit and cannot explain most sample variance (Figure~\ref{fig:decsig}).  However, Figure~\ref{fig:declsq} illustrates that a meaningful signal is present and can be robustly detected by our non-linear fitting procedure.  With a value for $k$ in hand, we assume baseline $B = 10 \unit{m}$ and estimate the fit declination $\delta$.  We also perform the reverse procedure by calculating source declinations (epoch J2000, precessed to 2014 April 7 using PyEphem) and then estimate the fit baseline.  We estimate the cable delay by computing $2\pi\nu\tau_c = \arctan(-B/A)$ (equation~\ref{eq:ptfringe}); however, the largest measurable cable delay is $\pm 47 \unit{ps}$ as we can only measure signal phase offset.  Table~\ref{tab:dec} summarizes our best fit parameters.
 
 We estimate uncertainties in our fit values by taking $\nu = 10.7 \pm 0.1 \unit{GHz}$ and $B = 10 \pm 0.1 \unit{m}$.  We are unable to quantify uncertainty for our fitted value of $k$, although this is the most important possible source of systematic error.  Interestingly, we expect a more precise measurement of $\delta$ with larger declination (farther from $\delta=0$).  Why?  The function $\cos\delta$ is relatively insensitive to changes in $\delta$ near $\delta=0$, hence uncertainty in $\cos\delta$ is propagated into a larger uncertainty in $\delta$.
-
 
 \begin{table}[!ht]
 \centering
@@ -349,22 +338,22 @@ We estimate uncertainties in our fit values by taking $\nu = 10.7 \pm 0.1 \unit{
 
 The calculated declinations for NGC 1976 (Orion) and NGC 6618 (M17) are accurate to about $1\degree$ on the sky, whereas our estimate of declination for NGC 4486 is off by $10\degree$.  Similarly, the calculated baselines for Orion and M17 agree with expectation to within $0.1 \unit{m}$.  We attribute the poor parameter fits for Virgo A to comparatively weak signal strength; the flux density of Virgo A at $10.7 \unit{GHz}$ is an order of magnitude weaker than flux densities for Orion and M17.
 
-% ----------------
-% Diameter fitting
-% ----------------
-\subsection{Angular diameters of the Sun, Moon}
+% ----------------------
+% Extended source theory
+% ----------------------
+\subsection{Interferometer extended source response}
 
-We now examine the interferometer response to extended sources in the sky, which is proportional to:
-$$
-    R(h_s) = \int I_\nu (\Delta h) \cos(2\pi\nu \tau_{\mathrm{tot}}) d(\Delta h)
-$$
-Here $h_s$ is the hour angle of the extended source's center, and $\Delta h = h - h_s$ is hour angle $h$ measured relative to our source.  This is simply the visibility equation with a cosine Fourier transform from our signal mixing, integrated over a 1-D sky.  We may think of this equation as integrating the impulse response over source extent; for $I_\nu(h_s) = \delta(\Delta h)$, we recover the usual fringe response $F(h_s) = \cos(2\pi\nu \tau_{\mathrm{tot}})$.  Conveniently, our antenna beamwidth (response) completely covers all extended sources of interest, namely the Sun and Moon.  To obtain a 1-D intensity distribution, we simply integrate source specific intensity perpendicular to the baseline direction.  For a symmetric source of small angular extent (so that we may Taylor expand in hour angle):
-$$
+The interferometer response to extended sources in the sky is proportional to:
+\[
+    R(h_s) = \int I_\nu (\Delta h) \cos(2\pi\nu \tau) d(\Delta h)
+\]
+Here $h_s$ is the hour angle of the extended source's center, and $\Delta h = h - h_s$ is hour angle $h$ measured relative to our source.  The impulse response is integrated over source extent within antenna beamwidth; for $I_\nu(h_s) = \delta(\Delta h)$, we recover the point source response $F(h_s) = \cos(2\pi\nu \tau)$.  Or, we may think of this as a cosine Fourier transform of source intensity -- a 1-D visibility equation.  To obtain a 1-D intensity distribution $I_\nu$, we simply integrate source specific intensity perpendicular to the baseline direction.  For a symmetric source of small angular extent, Taylor expansion in hour angle gives:
+\[
     R(h_s) \approx \cos(2\pi\nu \tau_{\mathrm{tot}}(h_s)) \int I_\nu (\Delta h) \cos(2\pi f_f \Delta h) d(\Delta h)
-$$
+\]
 The left-hand $\cos$ term is simply the point source fringe response; the right-hand integral is a modulation function.  This modulation function should predict our interferometer output's envelope curve (Figure~\ref{fig:sunFringes}).
 
-The modulation function depends on the angular diameter of the source.  Consider a circular source of angular radius $R$ and uniform specific intensity; the source then has 1-D intensity profile $I_\nu(\Delta h) = \frac{1}{R} \left( R^2 - (\Delta h)^2 \right)^{1/2}$.  The corresponding modulation function is:
+The modulation function depends on the angular diameter of the source.  Consider a circular source of angular radius $R$ and uniform specific intensity; its 1-D intensity distribution is $I_\nu(\Delta h) = \frac{1}{R} \left( R^2 - (\Delta h)^2 \right)^{1/2}$.  The corresponding modulation function is:
 \begin{align*}
     \mathrm{MF} &= \int \frac{1}{R} \left( R^2 - (\Delta h)^2 \right)^{1/2} \cos(2\pi f_f \Delta h) d(\Delta h) \\
                 &\propto \frac{1}{2\pi f_f R} \left(2\pi f_f R\right)
@@ -373,28 +362,67 @@ The modulation function depends on the angular diameter of the source.  Consider
 \end{align*}
 where $J_1(z)$ is a Bessel function of the first kind [\textit{Abramowitz and Stegun}, 1964].
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[scale=1]{plots_fitting/sun_fringes_envelopes.pdf} \\
-    \caption{Shitty caption}
-	\label{fig:sunFringes}
-\end{figure}
+% ----------------
+% Diameter fitting
+% ----------------
+\subsection{Angular diameters of the Sun, Moon}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[scale=1]{plots_fitting/sun_fringes_envelopes.pdf} \\
-    \caption{Shitty caption}
+    \caption{Sun observation data with extracted envelope curve (red) and expected modulation function shape (green).}
 	\label{fig:sunFringes}
 \end{figure}
+
+We estimate source angular diameters from modulation functions of 1 observation of the Sun and 2 observations of the Moon.  Although the theoretical modulation function should describe our fringe envelopes throughout observation, spurious signals from noise and incorrect pointing prevent us from simply applying a non-linear least squares fit.  Instead, we select and fit minima in observed fringe envelopes and map fringe amplitude minima to zero crossings of the expected modulation function.
+
+We first construct an envelope curve by extracting peak points of the underlying fringe sinusoid.  Each point on our envelope curve is an absolute maximum or minimum within a centered 30 second window.  Figure~\ref{fig:sunFringes} plots the envelope curve for our Sun observation in red, with the expected modulation function for a $0.25\degree$ radius source in green.  To identify minima in the envelope curve, we manually select domains which appear to contain minima and fit parabolas to the envelope within said domains (Figures~\ref{fig:sunMinimumFit},~\ref{fig:sunMinima}).  Fit parabolas of form $f(t) = c_0 + c_1 t + c_2 t^2$ have extrema where $f'(t) = c_1 + 2 c_2 t = 0$, or $t = - c_1 / (2 c_2)$.  This gives the hour angle and hence fringe frequency at envelope curve minima.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=1]{plots_fitting/{sun_minimum_-3.6_-3.1}.pdf}
+    \includegraphics[scale=1]{plots_fitting/{sun_minimum_-1.5_-0.5}.pdf} \\
+    \caption{Example envelope minimum fits for sun observation.  Blue circles plot extracted envelope curve, red curve plots best fit parabola, green plots underlying interferometer data.  Fit domain in hour angle is $[-1.5, -0.5]$.}
+	\label{fig:sunMinimumFit}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=1]{plots_fitting/sun_minima_all.pdf} \\
+    \caption{Fitted envelope minima for sun observation.  Thick red lines plot actual fit within domains, thin red lines extrapolate to illustrate fit shape.}
+	\label{fig:sunMinima}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=1]{plots_fitting/{sun_modulation_fit_-3.6_-3.1}.pdf} \\
+    \includegraphics[scale=1]{plots_fitting/{sun_modulation_fit_-1.5_-0.5}.pdf}
+    \caption{Predicted modulation functions from two zero crossings at minima $h_s = -3.39$ (top) and $h_s = -0.95$ (bottom) for sun observation; vertical dotted lines identify minima.  Solid black lines plot our suggested modulation functions, dashed and dotted lines plot modulation functions corresponding to other candidate radii.}
+    \label{fig:sunMFfits}
+\end{figure}
+
+We assume that modulation function minima correspond to zero crossings of $J_1(z)$, where $z = 2\pi f_f R$.  From various tabulations, $J_1(z)$ has zeros $z_0 = 3.8317$, $z_1 = 7.0156$, $z_2 = 10.1735$, $\ldots$.  Candidate source radii are then $R_i = z_i / (2\pi f_f)$, $i \in \ints^+$.  How do we select or identify the best radius?  Each candidate radius requires a certain shape (and some number of minima) for the modulation function.  For the sun, we expect to see two sets of minima (reflected across zero hour angle) in the correct modulation function; for the moon, we expect only one set.  This is a bit of a charade, so let's be honest.  We're trying to make the shoe fit our misshapen feet (Figure~\ref{fig:sunMFfits}) -- i.e., eyeballing and seeing which shape best fits our data.
+
+We suggest that the outside minima for the sun correspond to the 2nd zero of $J_1$; the inside minima correspond to the 3rd zero of $J_1$ (Figure~\ref{fig:sunMFfits}).  We did not fit minima at lower fringe frequencies (larger hour angle), as the signal was increasingly inconsistent and did not increase in amplitude as expected.  The average of four values of Sun radius (from four minima) is $R_{\mt{sun}} = 0.29\degree$.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=1]{plots_fitting/{moon_modulation_fit_-3.8_-2}.pdf}
+    \caption{Predicted modulation functions from minimum $h_s = -3.33$ for 2014 April 4 moon observation.  Vertical dotted lines identifies fitted minimum.  Solid black line plots our suggested modulation function, dashed and dotted lines plot modulation functions corresponding to other candidate radii.}
+	\label{fig:moonMFfits}
+\end{figure}
+
+The 2014 April 4 moon observation yields a more equivocal choice of modulation functions (Figure~\ref{fig:moonMFfits}).  The black curve appears to describe the data well, but the averaged radius $R_{\mt{moon}} = 0.159\degree$ significantly underestimates the actual moon radius.  The next possible modulation function, corresponding to the second zero of $J_1(z)$, gives $R_{\mt{moon}} = 0.29\degree$.  We disfavor the higher order modulation function due to the apparent lack of minima for hour angle between $[-2, 2]$, despite the closer agreement with the expected modulation function (as the moon and sun should have $R \sim 0.25\degree$).  Data with clearer zero crossings (i.e., less noise) would better determine the appropriate modulation function and hence radius.
 
 % ==========
 % Discussion
 % ==========
 \section{Discussion}
 
-It is worth mentioning that finite frequency bandwidth contributes an extra factor of $\mathrm{sinc} (\Delta\nu \tau_{\mt{tot}})$ to the interferometer's extended source response.  For our interferometer, the argument $\Delta\nu\tau < 1$ and so this term has a relatively small effect.
+Our modulation function fitting is very sketchy.  Ideally, we should characterize and remove interferometer noise and check interferometer pointing to ensure that we are recording a significant signal, particularly for near-horizon pointing.  Previous iterations of the class have obtained data with slightly different envelope curves, which might better fit our expected modulation functions [\href{http://ugastro.berkeley.edu/radio/interferometer/}
+{ugastro.berkeley.edu/radio/interferometer/}].
 
-Eclipse observation.
+Our lunar eclipse observation of the Moon was not so useful.  The fringe modulation function should decrease in amplitude during the eclipse due to cooling of the moon's surface [e.g., \textit{Pettit and Nicholson}, 1930]; observing the moon's cooling could allow us to characterize thermal properties of the moon's surface.  However, we first need to be able to accurately model the moon's modulation function outside of an eclipse -- this function will depend on the phase of the moon as well, but will at least have negligible thermal time dependence.  As our other moon observation was taken during a crescent moon ($\sim22\%$ illumination), we suggest follow-up observations during a full moon and a new moon.  The next new moon is 2014 April 28; the next full moon is 2014 May 14.
 
 \begin{figure}[!ht]
     \centering
@@ -403,12 +431,14 @@ Eclipse observation.
     \label{fig:eclipse}
 \end{figure}
 
+It is worth mentioning that finite frequency bandwidth contributes an extra factor of $\mathrm{sinc} (\Delta\nu\tau)$ to the interferometer's extended source response [\textit{Condon and Ransom}, 2006].  For our interferometer, the argument $\Delta\nu\tau < 1$ and so this term has a relatively small effect.
+
 % ===========
 % Conclusions
 % ===========
 \section{Conclusions}
 
-
+We successfully fit and estimate various astronomical parameters from interferometer fringe output.  Future work should focus on characterizing interferometer electronics, noise, and pointing to improve data processing and interpretation.  The material presented here naturally leads in to study of more sophisticated arrays and correlators, although our presentation is fairly elementary.
 
 \section{Acknowledgments}
 
@@ -419,6 +449,10 @@ Karto and Baylee's work on the interferometer hardware and software (especially 
 All supporting files are stored on the repository:\\
 \href{https://github.com/aarontran/ay121}
 {https://github.com/aarontran/ay121/lab3/}.
+
+In particular, our repository provides figures generated for all observations but not herein reproduced.
+
+I also note that the lab suggests that we perform a numerical function to determine the best angular radius.  Here I have turned to tabulated Bessel function zeros.  I did perform the numerical integration; candidate radii estimates from two procedures agree to within $0.001\degree$.  The code for this procedure might be found in some old commit though I make no guarantees.  It is straightforward enough, anyways.
 
 \section{References}
 
