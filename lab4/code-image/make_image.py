@@ -49,6 +49,46 @@ def main():
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
+    # Plot contours
+    l, b, col_density, v_ave, v_std = getData()
+    l = np.mod(cc.deg2rad(l) + np.pi, 2*np.pi) - np.pi
+    b = cc.deg2rad(b)
+
+    vals = v_ave
+
+    ctrs = np.linspace(min(vals), max(vals), 50)
+    #ctrs = np.array([0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,4,6,8,10,12,14,16]) * 1e21
+    cmap = 'RdYlBu'
+    # Interpolate over range of l,b using mlab.griddata
+    mwx, mwy = mw_xydeg_vec(l, b)
+    li = np.linspace(min(mwx), max(mwx), 100)
+    bi = np.linspace(min(mwy), max(mwy), 100)
+    X, Y = np.meshgrid(li, bi)
+    Z = mlab.griddata(mwx, mwy, vals, li, bi)
+
+    # Plot data points
+    plt.plot(mwx, mwy, 'xk', alpha=1, zorder=5, markersize=5)
+
+    # Plot interpolated surface + contours
+    ctrfplt = ax.contourf(X, Y, Z, ctrs, cmap=cmap)
+    ctrplt = ax.contour(X, Y, Z, ctrs)
+
+    # Plot mollweide grid!
+    all_ls = np.linspace(min(l), max(l), 100)
+    all_bs = np.linspace(min(b), max(b), 100)
+    b_horiz = cc.deg2rad(np.array([0, 30, 60, 90]))
+    l_vert = cc.deg2rad(np.array([-150, -120, -90, -60, -30, 0, 30]))
+    for bgrid in b_horiz:
+        bs = bgrid*np.ones_like(all_ls)
+        mwx, mwy = mw_xydeg_vec(all_ls, bs)
+        plt.plot(mwx, mwy, '--k', alpha=1, zorder = 10)
+    for lgrid in l_vert:
+        ls = lgrid*np.ones_like(all_bs)
+        mwx, mwy = mw_xydeg_vec(ls, all_bs)
+        plt.plot(mwx,mwy, '--k', alpha=1, zorder = 10)
+
+    
+
     # Plot bad region
     lims = cc.deg2rad(getunobservableregion())
     lims[:,0] = shift_to_pm_pi(lims[:,0])
@@ -57,38 +97,16 @@ def main():
     mwx = [cc.rad2deg(tup[0]) for tup in tups]
     mwy = [cc.rad2deg(tup[1]) for tup in tups]
 
-    ax.plot(mwx,mwy,'ok')
-
-    # Plot contours
-    l, b, col_density, v_ave, v_std = getData()
-    l = np.mod(cc.deg2rad(l) + np.pi, 2*np.pi) - np.pi
-    b = cc.deg2rad(b)
-
-    vals = v_std
-
-    # ctrs = np.array([0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,4,6,8,10,12,14,16]) * 1e21
-    ctrs = np.linspace(min(vals), max(vals), 20)
-    cmap = 'spectral'
-    # Interpolate over range of l,b using mlab.griddata
-    tups = [mw_xy(lon, lat) for lon, lat in zip(l,b)]
-    mwx = [cc.rad2deg(tup[0]) for tup in tups]
-    mwy = [cc.rad2deg(tup[1]) for tup in tups]
-    li = np.linspace(min(mwx), max(mwx), 100)
-    bi = np.linspace(min(mwy), max(mwy), 100)
-    X, Y = np.meshgrid(li, bi)
-    Z = mlab.griddata(mwx, mwy, vals, li, bi)
-
-    # Plot interpolated surface + contours
-    ax.contourf(X, Y, Z, ctrs, cmap=cmap)
-    ax.contour(X, Y, Z, ctrs)
-
-    # Plot filled region
-    lims = cc.deg2rad(getunobservableregion())
-    lims[:,0] = shift_to_pm_pi(lims[:,0])
-    ax.fill(lims[:,0], lims[:,1], facecolor='w', edgecolor='w', zorder=2,
+    ax.fill(mwx, mwy, facecolor='w', edgecolor='w', zorder=4,
             rasterized=True)
 
+    # Plot labels and colorbar
+    plt.colorbar(ctrfplt)
+    #plt.clabel(ctrplt, fontsize=14)
+
     plt.gca().invert_xaxis()
+    plt.xlabel('Galactic longitude (degrees)')
+    plt.ylabel('Galactic latitude (degrees)')
     plt.show()
 
 
@@ -232,6 +250,16 @@ def getData():
 # Mollweide projection
 # ====================
 
+def mw_xydeg_vec(lons, lats):
+    """Input lon, lat vectors (radians, floats)
+    Return vector of mollweide xy values, degrees
+    """
+    xytups = [mw_xy(lon, lat) for lon, lat in zip(lons,lats)]
+    mwx = [cc.rad2deg(tup[0]) for tup in xytups]
+    mwy = [cc.rad2deg(tup[1]) for tup in xytups]
+    return mwx, mwy
+
+
 def mw_xy(lon, lat):
     """Return x, y coordinates for lon, lat in Mollweide projection
 
@@ -247,7 +275,6 @@ def mw_xy(lon, lat):
     aux_angle = mw_aux_angle(lat)
     x = 2*np.sqrt(2) * lon * np.cos(aux_angle) / np.pi
     y = np.sqrt(2) * np.sin(aux_angle)
-
     return x, y
 
 

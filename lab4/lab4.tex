@@ -80,7 +80,8 @@ We observe the north polar spur and stuff
 % ============
 \section{Introduction}
 
-background on NPS
+background on NPS.  Supernovae, snowploughs, shocks, Sedov, whatever.
+ISM, physical properties inferrable.
 
 % ============
 % Observations
@@ -112,10 +113,14 @@ We observed the region of the sky with galactic latitude $b\geq 0\degree$ and ga
 
 Unfortunately, blah was not visible from the interferometer during our observing campaign and could not be mapped.
 
-Blah was not visible
-from the dish and was not mapped.
+In order to completely map the sky, the region of interest should be sampled with spacing $2\degree$ (for beamwidth $4\degree$).  In reality, hah.  We sampled most of the available region at $4\degree$ spacing.
 
-In order to completely map the sky, the region of interest should be sampled with spacing $2\degree$ (for beamwidth $4\degree$).  In reality, hah.  We sampled most of the available region at $4\degree$ spacing
+BRIEFLY explain observing procedure, zig-zagging in lat/lon, criterion for point visibility as computed by Isaac (Check this yourself if there's time).
+
+936 not visible?\\
+1119 need data\\
+444 we have data
+total: ~2500
 
 % ==============
 % Data reduction
@@ -124,20 +129,23 @@ In order to completely map the sky, the region of interest should be sampled wit
 
 \subsection{RFI removal}
 
+Caleb's thing.  Remove spikes by taking min of 4 point bins.
+
 \subsection{Calibration}
 
+cf carl heiles' intensity handout
+cool method.
+
+Integration times were chosen so error would be nice (mainly for noise).  Integration time for main observations dictated by physical brightness temp.
 
 \subsection{Image generation}
 
-I'm afraid to admit that, due to a shortage of time, I did not write my own
-velocity computation etc... scripts.  I was able to start on it, but did not
-work on baseline fitting and removal and peak identification.  Working on it
-now would require branching Isaac's pipeline, and risk messing up the current
-pipeline.  So I shan't do that, FOR NOW.
+Due to a shortage of time, I did not finish my own
+velocity computation etc... scripts.  Mainly needed baseline fitting/removal, peak identification.  (but, after baseline removal, I'd be able to get the main science done).  Working on it now would require branching Isaac's pipeline, and risk messing up the current data processing pipeline.  So I shan't do that yet...
 
-Later on, I would really want to be able to decompose the various peaks.  It
+Later on, I really want to be able to decompose the various peaks.  It
 looks like our spur observations don't have multiple peaks anyways, so it's not
-so bad since we dgaf about the galactic plane.
+so bad since we don't care about the galactic plane.
 
 % =======
 % Results
@@ -148,35 +156,46 @@ so bad since we dgaf about the galactic plane.
     \centering
     \includegraphics[width=0.5\textwidth]{plots/col_density.png} \\
     \caption{Column density}
-    \label{fig:fuck1}
+    \label{fig:colrho}
 \end{figure}
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.48\textwidth]{plots/veloc_mean.png}
     \includegraphics[width=0.48\textwidth]{plots/veloc_std.png} \\
     \caption{Mean velocity (left), stdev of velocity (right)}
-    \label{fig:fuck2}
+    \label{fig:velocs}
 \end{figure}
 
 To dos...
 
 (manual Mollweide projection + colorbars + zooming + better plots is partway done...)
 
-completely overhaul images (manually compute mollweide projection and image interpolation instead of relying on meshgrid)
-include colorbars
-determine physiologically sensible colormaps
-determine best nonlinear colormapping
+completely overhaul images (manually compute mollweide projection and image\\ interpolation instead of relying on meshgrid)\\
+include colorbars\\
+determine physiologically sensible colormaps\\
+determine best nonlinear colormapping\\
 reduce pdf file sizes...
 
-% ----------------------
-% Blah
-% ----------------------
-\subsection{Blah}
+Here's a picture of work in progress.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{v_ave_temporary.png}
+    \includegraphics[width=0.48\textwidth]{v_std_temporary.png} \\
+    \caption{Mean velocity (left), stdev of velocity (right).  Units are km/s for colors.}
+    \label{fig:velocs_again}
+\end{figure}
+
+Comparing the dispersion to the velocity mean looks promising!  As we might expect, dispersion is stronger towards the center of our postulated/expected bubble, a more robust velocity signal is seen at edges.
+
+The column density plot absolutely needs a logarithmic color scaling to see anything outside of the galactic plane.
 
 % ==========
 % Discussion
 % ==========
 \section{Discussion}
+
+IF I separate out lines and get individual linewidths etc (by gaussian fit, dispersion for indiv peaks, however you like) -- start considering physical phenomena that give rise to broadening.
 
 % ===========
 % Conclusions
