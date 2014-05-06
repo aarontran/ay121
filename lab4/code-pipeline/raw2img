@@ -1,0 +1,47 @@
+#!/bin/bash
+
+################################################################################
+## This script is for converting the raw data into image data.
+## Copyright (C) 2014  Isaac Domagalski: idomagalski@berkeley.edu
+##
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+
+# This script is indended to be run as a cron job.
+
+# Determine whether or not to suppress output.
+quiet=
+verbose=-v
+if [ "X$1" = "Xquiet" ]; then
+    quiet=quiet
+    verbose=
+fi
+
+# The data-process directory should already exist.
+mkdir -pv data-process
+
+# Scripts for converting raw data into usable spectra
+python2 Pickle_Data.py $quiet || exit $?
+python2 Load_Raw_Data.py $quiet || exit $?
+python2 Smooth_Data.py $quiet || exit $?
+python2 Combine_Data.py $quiet || exit $?
+
+# Convert spectra into image data.
+python2 get_img_data.py $verbose -o data-image || exit $?
+
+# Cleat out the defective data.
+python clean_defective.py $verbose \
+    -d data-process/defective-product \
+    -g data/grid.pkl \
+    -p data-process || exit $?

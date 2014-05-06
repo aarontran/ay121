@@ -1,0 +1,42 @@
+# All files in this directory authored by Caleb, Aaron and Isaac (CIA).
+# The ones described here are authored by Caleb Levy.
+
+To do a full process of the data:
+
+	1) Run Pickle_Data.py:
+	   
+	   This creates basic instances of pickle files, copying them to the 
+	   data-procss directory. It skips over any pickle files which have already 
+	   been created on the hopeful assumption that the basic format is stable 
+	   enough not to change.
+       
+	2) Run Load_Raw_Data.py
+	    
+	   This converts those log files which have not yet been 
+	   processed into .npy files for future reference and ease of access.
+	   
+	2) Run Smooth_Data.py: 
+	   
+	   This does basic noise removal from the data; in particular it removes 
+	   the RF-spikes.
+	   
+	3) Run Combine_Data.py: 
+	   
+	   This will combine the data into a single signal, along with relavant 
+	   frequency information. This set of routines is not yet complete.
+	   
+All data (except the .npy files in Load_Data) is written to the meta-pickle 
+file in the data-process directory. As far as I have tested, nothing is 
+modified in the data folder.
+
+Details for the structure of the metadata pickle can be found in 
+Data_Specification.txt. Additional files include:
+
+  - Envelope_Functions.py: For detecting the envelope and removing RF noise.
+  
+  - Plotting_Wrappers.py: A set of plotting routines to make matplotlib less 
+    aneurysm-inducing, now mainly useful for debugging, but will probably come 
+	in handy for the report.
+	
+  - File_Managing_Functions: A set of wrappers for Pythons 'os' module which 
+  	makes them slightly friendlier for our purposes.

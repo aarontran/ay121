@@ -1,0 +1,56 @@
+# Pickle structure originated by Aaron Tran and extended by Caleb Levy.
+
+Specification for Data:
+
+Structure of any pickle file processed by Load_Data, Smooth_Data, and 
+Combine_Data (in that order). Combine_Data is a work in progress.
+
+Data\
+	b - Latitude
+	f_high - High frequency LO
+	f_low - Low frequency LO
+	fname - File name
+	grid - Where it is in our grid (?)
+	l - Longitude
+	n_cal - Number of calibration spectra taken in the averaging (?)
+	n_obs - Number of observation spectra used in each averaging (?)
+	rec_success - Was this point good
+	time - Julian/unix/whatever friggin time (time.localtime())
+	jd - Julian day (best friggin time)
+	
+	Tokens\
+		made-np-data
+		added-np-data-to-array
+		smoothed-data
+		
+	Paths\
+		dependencies-dir - location of log files
+		backup-name - defunct for now
+		save-name - full path name where pickle file will be saved
+		save-prefix - for saving np files
+		save-dir - full folder path containing where python pickle is saved
+	
+	Raw\
+		left
+		leftC - calibration
+		right
+		rightC
+		right_Ax - frequency axis (to be likely corrected)
+		left_Ax
+		
+	Smooth\ 
+		left
+		left_Ax - frequency axis
+		left_inds - indices of the minimum data points used to construct the 
+			        smoothed curve.
+		left_power - normalization factor used for each spectra.
+		right
+		right_Ax
+		right_inds
+		right_power
+		
+	Combine\ -- Not yet in functioning form
+		R_over_L - (very) rough ratio of left and right power
+		lr_func - function to convert gridpoints via fitting (throwaway)
+		left - Remnant of scipy interpolation
+		

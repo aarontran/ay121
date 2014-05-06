@@ -1,0 +1,5 @@
+# Exclusions of large files... temporary
+data-image/bgnd_sub/*
+data-image/peak_find/*
+data-image/data-image.tar.gz
+plots/*.pdf

@@ -1,0 +1,6 @@
+Here is the structure of the grid file:
+
+[gal_b, [gal_l], [has_data]]
+
+So, if the metadata['grid'] is (i, j), you can read whether or not we have data
+by asking for grid[i][2][j].
