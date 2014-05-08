@@ -1,0 +1,56 @@
+Introduction
+    -- Astrophysics of the North Polar Spur
+        * Shape, form, research
+    -- HI line (hyperfine transition, strength, physical processes probed)
+        * Definition, physical process, Einstein A, compare to quantity of HI
+        * Observed strength
+        * Physical significance of neutral HI gas in the galaxy
+    -- Questions that can be addressed with HI?
+        * shock history, shape, ISM interaction
+
+Observations
+    -- Leuschner dish (hardware, signal processing chain)
+        * Dish specs
+        * LO mixing
+        * Output spectra, spectral resolution (compare to HI line)
+    -- Observing campaign
+        * Galactic coordinates -- definition for reference
+        * Size and dates of region mapped
+        * Galactic coordinates, and (RA, dec) for comparison
+        * Regions unmappable
+        * Mapping technique (Isaac zig-zags across the sky)
+
+Data reduction
+    -- RFI removal
+        * Sources of RFI
+        * Removal procedure
+    -- Calibration procedure
+        * Gain correction
+        * Converting power (units?!) to temperature (i.e. calibrate scale)
+        * Merging spectra (combine integration times)
+
+Data analysis
+    -- Baseline removal, peak identification
+    -- Computation of n-th moments, column density, et cetera
+    -- Error analysis
+        * Explain why we chose particular integration times
+    -- Map projections used
+        * Sinusoidal, Mollweide, Hammer-Aitoff, stereographic, orthographi
+
+Results
+    -- PRETTY PICTURES YAY
+    -- Qualitative features.  Discussion of numbers (magnitude/ranges).
+    -- Look at example spectra (at least one in region of high dispersion)
+
+Discussion
+    -- Additional science, scientific interpretation, ISM/shock shape
+
+Future work
+    -- Better ways to mitigate RFI
+    -- Better calibration methods
+        * RFI removal method that doesn't throw away 3/4 points
+    -- Better understanding of bubble shape, Gaussian fitting, etc.
+    -- NEW LEUSCHNER DISH MUCH FUN SO EXCITE VERY DATA.
+
+Conclusion
+    -- Uhhh.
