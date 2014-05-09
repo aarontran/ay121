@@ -65,7 +65,7 @@ ${}^2$Dept. Astronomy, UC Berkeley, D-23 Hearst Field Annex, Berkeley, CA 94720,
 ${}^3$Dept. Earth and Planetary Science, UC Berkeley, 335 McCone Hall, Berkeley, CA 94720, USA \\
 ${}^4$Radio Astronomy Laboratory, UC Berkeley, Berkeley, CA 94720, USA \\
 ${}^5$Undergraduate Radio Laboratory teaching staff \\
-\textit{Received in incomplete form 2014 May 6, revised 2014 May ?!}
+\textit{Received in incomplete form 2014 May 6, revised in incomplete form 2014 May 8}
 \end{center}
 
 % ========
@@ -73,17 +73,33 @@ ${}^5$Undergraduate Radio Laboratory teaching staff \\
 % ========
 \section*{Abstract}
 
-We observe the north polar spur and stuff
+We observe the north polar spur and make a nice picture.  We can make out a spur in column density, and I speculate that a northerly ridge is visible in velocity dispersion.
 
 % ============
 % Introduction
 % ============
 \section{Introduction}
 
-background on NPS.  Supernovae, snowploughs, shocks, Sedov, whatever.
-ISM, physical properties inferable.
+The North Polar Spur is a prominent ridge structure within a larger bubble-like structure above the plane of the Milky Way (positive galactic latitude, $b>0$) known as the Loop-I region [\textit{Heiles et al.}, 1980].  The shell(s?) bounding the Loop-I region and giving rise to the North Polar Spur are thought (weasel word: by whom?) to be propelled by supernovae shocks and stellar winds from the Sco-Oph (Sco-Cen?) OB association of stars.  Swept-up interstellar HI gas emits in radio and X-ray wavelengths due to 21 cm and synchrotron emission.
+Synchrotron emission might trace energetic physical processes or magnetic fields in the Loop-I shells.  Here we investigate HI line emission, which allows us to probe (1) shell column densities, and (2) velocities of the bulk gas.
 
-The North Polar Spur is a prominent ridge structure within the greater Loop-I region which emits continuum and HI line emission at $1420 \unit{MHz}$ [\textit{Heiles et al.}, 1980]
+\subsection{The HI 21 cm line}
+
+The $1420\unit{MHz}$ line arises from a forbidden hyperfine transition in neutral hydrogen (HI) gas.  The hyperfine transition arises due to spin-spin ($\vec{S}\cdot\vec{I}$) coupling between the hydrogen proton and electron, which splits the ground ($1s$) state into two levels with frequency separation $1420.40575 \unit{MHz}$ [e.g. \textit{Wittke and Dicke}, 1956; \textit{Kleppner, Goldenberg, and Ramsey}, 1962] (these references are kind of old, couldn't find a newer source for the most accurate line measurement).
+
+Although the HI line transition is quantum mechanically forbidden (angular momentum selection rules), the low transition rate and low (radio) wavelength implies that hyperfine emission of HI easily reaches thermal equilibrium.  Therefore, HI line emission should directly reflect source temperatures and densities.
+
+Some comments about physical significance of neutral HI in the galaxy go here?
+
+Here's a simple equation for column density:
+\[
+    \eta_H \approx (1.82 \times 10^{18} \unit{K^{-1} km^{-1} s}) \int T_b\left(v\right) dv
+\]
+where $\eta_H$ is column density in units of $\mt{cm}^{-2}$ and $T_b(v)$ is brightness temperature (K) as a function of velocity (km/s) [\textit{Condon and Ransom}, 2006].
+
+\subsection{Questions that can be addressed}
+
+Here I should discuss a bit more about shock-ISM interaction if there is time (partially out of own interest).  Karto mentioned a lot of interesting physical processes that might be discussed -- by discuss, I mean at least think about whether they are visible or may be probed at all.  In particular, shell shape (thickness, density, velocity) may tell us something about the interstellar medium distribution around the Milky Way, the history of the shell (what energy is needed to mobilize some amount of gas?), et cetera.  This would require myriad assumptions and guesses.
 
 % ============
 % Observations
@@ -115,8 +131,6 @@ For each point on the sky, we collect four raw spectra which are later reduced t
 % ------------------
 \subsection{Observing campaign}
 
-Galactic coordinate definition, visible galaxy (RA, dec etc).
-
 We observed the sky in the region $\{(l,b) \mid -150\degree \leq l \leq 20\degree, b \geq 0\degree\}$, which contains the bulk of the North Polar Spur.
 Our observations were performed between 2014 April 26 to 2014 May 5.  In order to completely map the sky, the region of interest should be sampled with angular spacing $2\degree$ (for beamwidth $4\degree$); note that due to foreshortening, the spacing in galactic longitude is $2\degree / \cos(b)$.  Approximately $2500$ pointings are required for complete sky coverage.  Due to time constraints, we sampled most of the available region at $4\degree$ spacing in both galactic latitude/longitude.
 
@@ -133,9 +147,7 @@ Our observations zig-zag along lines of fixed longitude during each observing wi
 
 Our goal is to (1) convert unknown spectrometer intensity units to brightness temperature, and (2) remove the continuous bandpass filter
 
-N.B. we may use the words power, intensity, and temperature interchangeably.  Apologies for the technical imprecision...  (I have not gone through and done the usual litany of checking that terms are defined at first usage and consistently used, not swapped out for synonyms)
-
-I don't think I've presented/explained our spectra usage well (i.e. sticking to a certain convention when explaining spectra)
+N.B. we may use the words power, intensity, and temperature interchangeably.  Apologies for the technical imprecision...  (I have not gone through and done the usual litany of checking that terms are defined at first usage and consistently used, not swapped out for synonyms).  I don't think I've presented/explained our spectra usage well (i.e. sticking to a certain convention when explaining spectra).
 
 % ------------------------
 % Radio freq. interference
@@ -154,7 +166,7 @@ RFI appears as sharp power spikes in output frequency spectra.  The quantity of 
     \label{fig:rfi}
 \end{figure}
 
-We removed RFI spikes by binning spectra into bins of $4$ channels and taking the bin channel with minimum power.  We choose bin width $4$ because our RFI spikes are typically localized to a single spectrometer channel, at most $2-3$ channels.  Although ad hoc, this procedure empirically appears to work reasonably well.
+We removed RFI spikes by binning spectra into bins of $4$ channels and taking the bin channel with minimum power.  We choose bin width $4$ because our RFI spikes are typically localized to a single spectrometer channel, at most $2-3$ channels.  Although ad hoc, this procedure empirically appears to work well.
 
 % -----------
 % Calibration
@@ -181,25 +193,23 @@ For each set of spectra at a given $f_{\mt{LO}}$ we sum the channel-by-channel q
     \label{fig:excized}
 \end{figure}
 
-I wrote out the math for this procedure some time ago and it makes sense qualitatively, but Caleb's procedure is slightly different -- it seems as if we compute the system temperature once for each set of spectra, and gain for left/right spectra.
+I wrote out the math for this procedure some time ago and it makes sense qualitatively, but Caleb's procedure is slightly different -- it seems as if we compute the system temperature and gain separately for each set of spectra.  Then, we use the un-noised data from each LO freq to subtract out the bandpass shape.  Following this, the temperatures and frequencies are both averaged -- though I'm not sure what the physical rationale for frequency averaging(?) is exactly.  Refer to Caleb's report for a better account of the calibration procedure.
 
-
-
-Finally, in order to combine the left and right spectra, I averaged together BOTH the temperatures AND the frequencies of the data for the arrays corresponding the high and low Local Oscillator frequencies. As the indices for each frequency are different, I thought this was a good compromise; this does produce errors of order 10 khz however, so it is possible that this biases our data one way or another if the RF spikes have a systematic patter to them. It would probably be worth discussing this.
--- CALEB
+The output frequency range is $1419$ to $1421.5\unit{MHz}$
 
 \subsection{Error analysis}
 
-Integration times were chosen so error would be nice (mainly for noise).  Integration time for main observations dictated by physical brightness temp.
+Integration times were chosen so error would be nice (mainly for noise).  Integration time for main observations dictated by physical brightness temp.  (mention that, when combining two measurements, error is minimized for balanced integration times)  The following is copy pasted from our code pipeline's README, but I certify that I personally wrote this.
 
-I chose the time for noise diode integration so that the error (which arises from a sum/average over all channels) would be order $10\%$ of the channel-by-channel error.
+The (default) total integration time for both spectra is 87 * 2 * 0.692 sec/spec = 120 seconds.  The (default) integration time for both noise spectra is 9 * 2 * 0.692 sec/spec = 12.5 seconds.  Some earlier spectra were collected with doubled integration times.  From prior experience (i.e., lab manual, suggestions in class, early test data etc), we choose 120 seconds to resolve features with T ~ 1 to 10 K.
 
-The signal error is calculated as
+We desire that the calibration sum error be no more than 1/10th of error arising from individual channel uncertainty.  The error of the noise calibration enters only through a sum term, so the error is scaled by ~1/N where N is the number of channels summed.  We conservatively take $N \sim 4096$ rather than $8192$ (information lost from RFI removal, data cut at passband edges, etc.).  Since the calibration integration time will be short, the calibration data is the main source of error in this sum.  Looking at squared errors (as error scales with $1 / \sqrt(\mt{time})$ ):
 \[
-    5
+    0.01 * \frac{1}{\mt{integration\;time}} \sim \frac{1}{\mt{calibration\;integration\;time}} * \frac{1}{4096}
 \]
+The integration time with noise should be at least 0.02x the integration time of our actual data.  Here the calibration integration time is ~0.1x the integration time of our actual data.  So we don't expect the calibration to contribute too much additional error.
 
-Output frequency range is $1419$ to $1421.5\unit{MHz}$
+However, as Caleb aggressively downsampled the data, this analysis may no longer be valid and the calibration noise error could contribute a non-trivial portion of observed error.  The error analysis needs to be repeated.
 
 % =============
 % Data analysis
@@ -209,17 +219,42 @@ Output frequency range is $1419$ to $1421.5\unit{MHz}$
 \subsection{Baseline removal and peak identification}
 
 Due to a shortage of time, I did not finish my own
-velocity computation etc... scripts.  Mainly needed baseline fitting/removal, peak identification.  (but, after baseline removal, I'd be able to get the main science done).  Working on it now would require branching Isaac's pipeline, and risk messing up the current data processing pipeline.  So I shan't do that yet...
+velocity computation etc scripts.  Mainly needed baseline fitting/removal, peak identification.  (but, after baseline removal, I'd be able to get the main science done).  Working on it now would require branching Isaac's pipeline, and risk messing up the current data processing pipeline.  So I shan't do that yet...
 
 Later on, I really want to be able to decompose the various peaks.  It
 looks like our spur observations don't have multiple peaks anyways, so it's not
 so bad since we don't care about the galactic plane.
 
-\subsection{$n$-th moment computation}
+\subsection{Useful quantities}
+
+I reproduce some comments from my code here.
+
+From our finished spectra, with baselines removed and power scaled to brightness temperature, we calculate and generate plots of column density, mean velocity, and velocity standard deviation (a measure of dispersion)
+
+The $n$-th moment of velocity, weighted by temperature/intensity $I(v)$, is:
+\[
+    E[v^n] = \left( \int v^n I(v) dv \right) / \left( \int I(v) dv \right)
+\]
+The $0$th moment is $1$ (using normalization factor $\int I(v) dv$) and the 1st moment is the mean velocity $v_{\mt{ave}}$.
+
+The $n$-th \emph{central} moment of velocity, weighted by temperature/intensity $I(v)$, is given by:
+\[
+    \mu_n = E\left[ \left(v - v_{\mt{ave}} \right)^n \right]
+          = \left( \int \left(v - v_{\mt{ave}} \right)^n I(v) dv \right) / \left( \int I(v) dv \right)
+\]
+where $v_{\mt{ave}}$ is mean velocity as defined immediately prior.  The 0th and 1st central moments are $1$ and $0$ respectively; the 2nd central moment is the velocity variance.
+
+You may note that it is quite convenient to think of $I(v)$ as akin to an unnormalized probability density function (pdf); the normalized pdf is simply
+\[
+    \frac{I(v)}{\int I(v) dv}
+\]
+where the integral is evaluated over $\mathbb{R}$.  Our definitions of these moments correspond to those given by Wikipedia [\href{https://en.wikipedia.org/wiki/Central_moment#Univariate_moments}{en.wikipedia.org/wiki/Central\_moment}].
+
+To calculate velocity standard deviation, we simply take the square root of the variance as usual.
 
 \subsection{Data interpolation and projection}
 
-
+I copped out and use matplotlib's griddata functionality, which performs a natural neighbor interpolation (n.b., distinct from \emph{nearest} neighbor interpolation!) on irregularly spaced data points.  I subsequently present contour maps of interpolated column density, mean velocity, and velocity standard deviation.  Data projection is Mollweide equal-area.
 
 % =====================
 % Results, pretty image
@@ -230,16 +265,21 @@ so bad since we don't care about the galactic plane.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.5\textwidth]{plots/col_density.jpg} \\
-    \caption{Column density.  Note that this is very roughly log scaled.}
+    \includegraphics[width=0.8\textwidth]{plots/col_density.pdf} \\
+    \caption{Column density.  Units are $\mathrm{cm}^{-2}$.  Note that this is very roughly (i.e. manually) log scaled.  Plot axis ticks are INCORRECT, though they have the generally correct trend.  Gridlines are spaced $30\degree$ apart.}
     \label{fig:colrho}
 \end{figure}
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.48\textwidth]{plots/veloc_mean.jpg}
-    \includegraphics[width=0.48\textwidth]{plots/veloc_std.jpg} \\
-    \caption{Mean velocity (left), stdev of velocity (right)}
-    \label{fig:velocs}
+    \includegraphics[width=0.8\textwidth]{plots/veloc_mean.jpg} \\
+    \caption{Mean velocity.  Units are km/s.  Same issues as in previous plots.}
+    \label{fig:mean}
+\end{figure}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{plots/veloc_std.jpg} \\
+    \caption{Std. dev. of velocity.  Units are km/s.  Same issues as in previous plots.}
+    \label{fig:stdev}
 \end{figure}
 
 Things to do:
@@ -257,7 +297,9 @@ Things to do:
 
 \subsection{Qualitative features}
 
-Comparing the dispersion to the velocity mean looks promising!  As we might expect, dispersion is stronger towards the center of our postulated/expected bubble, a more robust velocity signal is seen at edges.
+Comparing the dispersion to the velocity mean looks promising!  As we might expect, dispersion is stronger towards the center of our postulated/expected bubble, a more robust velocity signal is seen at edges.  However, these are very weak signals -- our SNR gets smaller at high galactic latitudes, though the signal is quite evident still.
+
+Give some example spectra, especially in that little spur of high dispersion.
 
 % ==========
 % Discussion
@@ -300,7 +342,7 @@ If there is any way to probe polarization (as it seems they were once able to do
 
 Pretty pictures are gr8.
 
-\section{Appendix A: rainbow colormap considered harmful}
+\section{Appendix A: other colormaps}
 
 Comparison plots for different colormaps.
 
@@ -312,19 +354,12 @@ Comparison plots for different colormaps.
     \label{fig:velocs_again}
 \end{figure}
 
-They look so pretty... but they're not as meaningful as they seem.
+They look so pretty... but they're not as meaningful as they seem -- see the arguments put forth by \textit{Borland and Taylor II} [2007] in \textit{Rainbow Color Map (Still) Considered Harmful}.
 
 % ===============
 % Acknowledgments
 % ===============
 \section{Acknowledgments}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.5\textwidth]{kartp2.png} \\
-    \caption{(image courtesy of I. Domagalski, E. Herrera, K. Moses)}
-    \label{fig:kartp2}
-\end{figure}
 
 \begin{center}
 Kartp noster, qui es in radiolab:\\
@@ -339,7 +374,7 @@ et ne nos inducas in tentationem;\\
 sed libera nos a circumsonum.
 \end{center}
 
-Five pieces of duct tape.
+This lab was made possible by five pieces of duct tape (placed by Kartp noster).
 
 %Karto and Baylee are gr8.
 %Isaac and Caleb are gr8.
@@ -352,10 +387,15 @@ I. A. D. did almost everything tracking.  C. L. did all calibration.  A. T. did 
 \section{Electronic supplement}
 
 All supporting files are stored on the repository:\\
-\href{https://github.com/aarontran/ay121}
-{https://github.com/aarontran/ay121/lab4/}.
+\href{https://github.com/aarontran/ay121/lab4/}{github.com/aarontran/ay121}.
+
+More thorough documentation and additional scripts/utilities may be found at:
+\href{https://bitbucket.org/domagalski/cia-leuschner-pipeline/src}{bitbucket.org/domagalski/cia-leuschner-pipeline/} and
+\href{https://bitbucket.org/domagalski/astro121-radio-lab/src/94a1d5725fa67ded6b111689c74a303ea254fa7c/lab-leuschner/?at=master}{bitbucket.org/domagalski/astro121-radio-lab/} (the latter, in particular, has source for Isaac's status webpage at \href{http://ugastro.berkeley.edu/~domagalski/ay121/leuschner/}{ugastro.berkeley.edu/~domagalski/ay121/leuschner/}).
 
 \section{References}
+
+\hangindent 0.25in Borland, D. and R. M. Taylor II (2007), Rainbow color map (still) considered harmful, \textit{27}(2), 14--17, doi:10.1109/MCG.2007.46.
 
 \hangindent 0.25in Condon, J. J. and S. M. Ransom (2006), Essential Radio Astronomy, \\
 \href{http://www.cv.nrao.edu/course/astr534/ERA.shtml}
@@ -368,9 +408,13 @@ Cambridge Univ. Press, Cambridge.
 
 \hangindent 0.25in Heiles, C., Y.-H. Chu, R. J. Reynolds, I. Yegingil, and T. H. Troland (1980), A new look at the North Polar Spur, \textit{Astrophys. J.}, \textit{242}, 533--540, doi:10.1086/158487.
 
+\hangindent 0.25in Kleppner, D., H. M. Goldenberg, and N. F. Ramsey (1962), Properties of the hydrogen maser, \textit{Appl. Optics}, \textit{1}, 55--60, doi:10.1364/AO.1.000055.
+
 \hangindent 0.25in Siemion, A. (2012), Leuschner Spectrometer, CASPER documentation wiki, \\
 \href{https://casper.berkeley.edu/wiki/Leuschner\_Spectrometer}
 {https://casper.berkeley.edu/wiki/Leuschner\_Spectrometer}.
+
+\hangindent 0.25in Wittke, J. P. and R. H. Dicke (1956), Redetermination of the hyperfine splitting in the ground state of atomic hydrogen, \textit{Phys. Rev. Lett.}, \textit{103}(3), 620--631, doi:10.1103/PhysRev.103.620.
 
 \hangindent 0.25in Wolleben, M. (2007), A New Model for the Loop I (North Polar
 Spur) Region, \textit{Astrophys. J.}, \textit{664}, 349--356,

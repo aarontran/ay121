@@ -43,9 +43,9 @@ rcParams['axes.labelsize'] = 9
 rcParams['xtick.labelsize'] = 9
 rcParams['ytick.labelsize'] = 9
 rcParams['legend.fontsize'] = 9
-#rcParams['font.family'] = 'serif'
-#rcParams['font.serif'] = ['Computer Modern Roman']
-#rcParams['text.usetex'] = True
+rcParams['font.family'] = 'serif'
+rcParams['font.serif'] = ['Computer Modern Roman']
+rcParams['text.usetex'] = True
 
 
 def main():
@@ -63,20 +63,20 @@ def main():
     print min(col_density),max(col_density)
     #ctrs = np.linspace(min(col_density), max(col_density), 50)
     cmap = cubehelix.cmap(reverse=True)
-    makeplot(l, b, col_density, ctrs, cmap, '../plots/col_density.jpg',
+    makeplot(l, b, col_density, ctrs, cmap, '../plots/col_density.pdf',
              norm=clrs.LogNorm())
 
     # Velocity
     ctrs = np.linspace(-50, 50, 19)
     print min(v_ave), max(v_ave)
     cmap = 'bwr'  # Prefer a proper diverging scheme here...
-    makeplot(l, b, v_ave, ctrs, cmap, '../plots/veloc_mean.jpg')
+    makeplot(l, b, v_ave, ctrs, cmap, '../plots/veloc_mean.pdf')
 
     # Velocity dispersion
     ctrs = np.linspace(0, 40, 19)
     print min(v_std), max(v_std)
     cmap = cubehelix.cmap(reverse=True)
-    makeplot(l, b, v_std, ctrs, cmap, '../plots/veloc_std.jpg')
+    makeplot(l, b, v_std, ctrs, cmap, '../plots/veloc_std.pdf')
 
 
 
@@ -98,11 +98,11 @@ def makeplot(l, b, vals, ctrs, cmap, fname, norm=None):
     Z = mlab.griddata(mwx, mwy, vals, li, bi)
 
     # Plot data points
-    plt.plot(mwx, mwy, '+w', alpha=1, zorder=5, markersize=5, rasterized=True)
+    plt.plot(mwx, mwy, '+w', alpha=1, zorder=5, markersize=5, rasterized=False)
 
     # Plot interpolated surface + contours
-    ctrfplt = ax.contourf(X, Y, Z, ctrs, cmap=cmap, norm=norm, rasterized=True)
-    ctrplt = ax.contour(X, Y, Z, ctrs, norm=norm, rasterized=True)
+    ctrfplt = ax.contourf(X, Y, Z, ctrs, cmap=cmap, norm=norm, rasterized=False)
+    ctrplt = ax.contour(X, Y, Z, ctrs, norm=norm, rasterized=False)
 
     # Plot mollweide grid!
     all_ls = np.linspace(cc.deg2rad(-150), cc.deg2rad(30), 100)
@@ -113,12 +113,12 @@ def makeplot(l, b, vals, ctrs, cmap, fname, norm=None):
         bs = bgrid*np.ones_like(all_ls)
         mwx, mwy = mw_xy(all_ls, bs)
         mwx, mwy = cc.rad2deg(mwx), cc.rad2deg(mwy)
-        plt.plot(mwx, mwy, ':k', alpha=1, zorder = 10, rasterized=True)
+        plt.plot(mwx, mwy, ':k', alpha=1, zorder = 10, rasterized=False)
     for lgrid in l_vert:
         ls = lgrid*np.ones_like(all_bs)
         mwx, mwy = mw_xy(ls, all_bs)
         mwx, mwy = cc.rad2deg(mwx), cc.rad2deg(mwy)
-        plt.plot(mwx, mwy, ':k', alpha=1, zorder = 10, rasterized=True)
+        plt.plot(mwx, mwy, ':k', alpha=1, zorder = 10, rasterized=False)
 
     # Blocked out region that we did not observe
     lims = unobservable_loop('grid.pkl')
@@ -126,7 +126,7 @@ def makeplot(l, b, vals, ctrs, cmap, fname, norm=None):
     lims_x, lims_y = mw_xy(lims[:,0], lims[:,1])
     lims_x, lims_y = cc.rad2deg(lims_x), cc.rad2deg(lims_y)
     plt.fill(lims_x, lims_y, facecolor='w', edgecolor='w', zorder=4,
-             rasterized=True)
+             rasterized=False)
     # plt.plot(lims_x,lims_y,'ok',zorder=5)
 
     # Plot labels and colorbar
@@ -136,7 +136,7 @@ def makeplot(l, b, vals, ctrs, cmap, fname, norm=None):
     plt.gca().invert_xaxis()
     plt.xlabel('Galactic longitude (degrees)')
     plt.ylabel('Galactic latitude (degrees)')
-    plt.savefig(fname, dpi=400)
+    plt.savefig(fname)
     #plt.show()
     plt.clf()
 
@@ -170,7 +170,7 @@ def makeplot_mpl_projection(l, b, vals, contours, cmap, fname):
     lims = cc.deg2rad(unobservable_loop())
     lims[:,0] = shift_to_pm_pi(lims[:,0])
     ax.fill(lims[:,0], lims[:,1], facecolor='w', edgecolor='w', zorder=2,
-            rasterized=True)
+            rasterized=False)
 
     plt.title('Sky')
     plt.grid(True)
